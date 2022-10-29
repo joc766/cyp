@@ -14,3 +14,11 @@ def index():
     html = render_template('index.html')
     response = make_response(html)
     return response
+
+
+@app.route('/search', methods=['GET'])
+def get_buildings():
+    building_name = request.args.get('name')
+    html = render_template('index.html')
+    response = make_response(html)
+    return response
