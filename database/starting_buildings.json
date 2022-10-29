@@ -2,6 +2,7 @@
     "ServiceResponse": {
         "Buildings": [
             {
+                "ID": "0",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.929413",
                 "BUILDING_ABBR": "HQ",
@@ -16,9 +17,12 @@
                 "LATITUDE": "41.31224",
                 "ADDRESS_1": "YORK STREET, 320",
                 "HISTORICAL_ALIAS": "HALL OF GRADUATE STUDIES; YORK ST, 320",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "TOTAL_RATING": "0",
+                "NUMBER_RATINGS": "0"
             },
             {
+                "ID": "1",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.930945",
                 "BUILDING_ABBR": "PWG",
@@ -32,9 +36,12 @@
                 "MSAG_ALIAS": "TOWER PKWY, 70",
                 "LATITUDE": "41.313769",
                 "ADDRESS_1": "TOWER PARKWAY, 70",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "TOTAL_RATING": "0",
+                "NUMBER_RATINGS": "0"
             },
             {
+                "ID": "2",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.927608",
                 "BUILDING_ABBR": "BASSLB",
@@ -49,9 +56,12 @@
                 "LATITUDE": "41.310685",
                 "ADDRESS_1": "WALL STREET, 110",
                 "HISTORICAL_ALIAS": "CROSS CAMPUS LIBRARY - CCL",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "TOTAL_RATING": "0",
+                "NUMBER_RATINGS": "0"
             },
             {
+                "ID": "3",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.926478",
                 "BUILDING_ABBR": "SC",
@@ -66,9 +76,12 @@
                 "LATITUDE": "41.311803",
                 "ADDRESS_1": "GROVE STREET, 168",
                 "HISTORICAL_ALIAS": "UNIVERSITY COMMONS",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "TOTAL_RATING": "0",
+                "NUMBER_RATINGS": "0"
             },
             {
+                "ID": "4",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.923669",
                 "BUILDING_ABBR": "ML",
@@ -82,9 +95,12 @@
                 "MSAG_ALIAS": "HILLHOUSE AVE,  9",
                 "LATITUDE": "41.312108",
                 "ADDRESS_1": "HILLHOUSE AVENUE,  9",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "TOTAL_RATING": "0",
+                "NUMBER_RATINGS": "0"
             },
             {
+                "ID": "5",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.924933",
                 "HISTORICAL_NAME": "Sheffield Chemical Laboratory /Sheffield Laboratory of Engineering Mechanics/She",
@@ -100,7 +116,9 @@
                 "LATITUDE": "41.313064",
                 "ADDRESS_1": "PROSPECT STREET,  51",
                 "HISTORICAL_ALIAS": "SHEFFIELD CHEM LAB; SHEFFIELD LAB OF ENG. MECH.",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "TOTAL_RATING": "0",
+                "NUMBER_RATINGS": "0"
             }
         ]
     }
