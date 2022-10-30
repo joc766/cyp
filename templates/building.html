@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+ <html>
+    <head>
+        <title>Yale-P Website</title>
+        </head>
+    <body>
+        <h1>Building Details</h1>
+        <br>
+        <div id="buildingInfo"></div>
+        <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+        </script>
+            function changeRating(%s){
+                alert(num);  
+            }
+            function setup(response){
+                let inner = ''
+                if (response !== '') inner = "<hr>" + response;
+                $('#buildingInfo').html(inner);
+            }
+            $('document').ready(setup);
+        </script>
+        <button onclick="changeRating(1)">wow</button>
+        </body>
+    </html>

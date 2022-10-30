@@ -28,8 +28,7 @@ def get_buildings():
     matches = get_buildings_by_name(building_name)
 
     html = ''
-    #pattern = '<strong>%s</strong>: %s (%d stars)<br>'
-    pattern = '<button onclick="\"location.href=/info?name=%s\";">%s</button>'
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
     for building in matches:
         html += pattern % (building.get_name(), building.get_name())
     
@@ -37,7 +36,25 @@ def get_buildings():
     return response
 
 @app.route('/info', methods=['GET'])
-def building_details(info):
-    name = info[0]
-    address = info[1]
-    rating = info[2]
+def building_details():
+    name = request.args.get('name')
+    building = get_buildings_by_name(name)[0]
+    building_info = building.to_tuple()
+
+    html = ''
+    pattern = '<h5>%s</h5><strong>%s</strong>'
+    html += pattern % ('Name', building_info[0])
+    html += pattern % ('Address', building_info[1])
+    html += pattern % ('Rating', building_info[2])
+
+    #5 star system
+    html += '<h6>Rate this Building</h6>'
+    star_pattern = '<button onclick="changeRating(%s)">%s</button>'
+    for i in range(0,5):
+        html += star_pattern % (i+1, i+1)
+
+    response = make_response(html)
+    return response
+
+
+    

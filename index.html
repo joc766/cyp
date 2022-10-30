@@ -8,7 +8,6 @@
       Please enter a building name:
       <input type="text" id="buildingInput" autoFocus>
 
-      <div id="searchResults"></div>
       <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
       </script>
       
@@ -19,11 +18,8 @@
 
          function handleResponse(response)
          {
-            console.log('HANDLERESPONSE')
             let inner = ''
             if (response !== '') inner = "<hr>" + response;
-            console.log(inner)
-            console.log(response)
             $('#searchResults').html(inner);
          }
 
@@ -51,7 +47,7 @@
          }
 
          $('document').ready(setup);
-      </script>    
+      </script>  
+      <div id="searchResults"></div>  
    </body>
-
  </html>
