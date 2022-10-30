@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.10
+
 import argparse
 from sys import argv, stderr, exit
 from yalepapp import app

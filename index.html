@@ -4,10 +4,52 @@
       <title>Yale-P Website</title>
       </head>
    <body>
-      {% include 'header.html' %}
-      <br>
-      Click here to <a href="searchform">begin</a>.<br>
-      <br>
-      {% include 'footer.html' %}
+      <h1>Buildling Search</h1>
+      Please enter an building name:
+      <input type="text" id="buildingInput" autoFocus>
+
+      <div id="searchResults"></div>
+      <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+      </script>
+
+      <!-- <script src="static/jquery.min.js"></script> -->
+
+      <script>
+         'use strict';
+
+         function handleResponse(response)
+         {
+            let inner = ''
+            if (response !== '') inner = "<hr>" + response;
+            $('#searchResults').html(inner);
+         }
+
+         let request = null;
+
+         function getResults()
+         {
+            let building = $('#buildingInput').val();
+            building = encodeURIComponent(building);
+            let url = '/search?building=' + building
+
+            if (request != null)
+               request.abort();
+
+            request = $.ajax({
+               type: 'GET',
+               url: url,
+               success: handleResponse
+            });
+         }
+
+         function setup()
+         {
+            $('#buildingInput').on('input', getResults);
+         }
+
+         $('document').ready(setup);
+      </script>    
    </body>
+
  </html>
