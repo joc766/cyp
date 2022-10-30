@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+ <html>
+    <head>
+        <title>Yale-P Website</title>
+        </head>
+    <body>
+        <h1>Building Details</h1>
+        <br>
+
+        <!-- <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> -->
+        <script>   
+            function changeRating(num){
+                console.log(num)
+            }
+            function setup(response){
+                console.log('setup')
+            }
+            $('document').ready(setup);
+        </script>
+
+        <h5>Name</h5><strong>{{name}}</strong>
+        <h5>Address</h5><strong>{{address}}</strong>
+        <h5>Current Rating</h5><strong>{{rating}}</strong>
+        <h6>Rate this Building</h6>
+        <button class="rate_button" onclick="changeRating(1)">1</button>
+        <button class="rate_button" onclick="changeRating(2)">2</button>
+        <button class="rate_button" onclick="changeRating(3)">3</button>
+        <button class="rate_button" onclick="changeRating(4)">4</button>
+        <button class="rate_button" onclick="changeRating(5)">5</button>
+        </body>
+    </html>
