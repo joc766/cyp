@@ -1,6 +1,6 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template
 from flask import render_template
-from helpers import get_buildings_by_name
+from helpers import get_buildings_by_name, update_rating
 
 #we are using jinja
 #-----------------------------------------------------------------------
@@ -45,9 +45,17 @@ def building_details():
     response = make_response(html)
     return response
 
+@app.route('/submitRating', methods=['POST'])
+def vote():
+    building_name = request.form.get('building')
+    n_stars = int(request.form.get('n_stars'))
 
-# @app.route('/info', methods=['GET'])
-# def build():
+    new_rating= update_rating(building_name, n_stars)
+
+    response = make_response('SUCCESS')
+    response.headers["new_rating"] = new_rating
+    return response
+
     
 
 
