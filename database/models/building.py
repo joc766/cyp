@@ -3,7 +3,7 @@ class Building:
     def __init__(self, sqlRow):
         self._id = sqlRow["id"]
         self._abbr = sqlRow["abbr"]
-        self._address = sqlRow["address"]
+        self._address = sqlRow["addr"]
         self._descrip = sqlRow["descrip"]
         self._building_prose = sqlRow["building_prose"]
         self._total_rating = sqlRow["total_rating"]
