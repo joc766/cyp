@@ -5,7 +5,7 @@ from helpers import get_buildings_by_name, update_rating
 #we are using jinja
 #-----------------------------------------------------------------------
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__, template_folder='templates')
 
 #-----------------------------------------------------------------------
 #initial page
