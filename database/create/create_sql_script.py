@@ -27,13 +27,13 @@ def main():
             for b in buildings:
                 # just a way to format the json values into a statement for the .sql file
                 stmt = (f"INSERT INTO buildings VALUES("
-                    f"{int(b['ID'])}, "
-                    f"\"{b['BUILDING_ABBR']}\","
-                    f"\"{b['ADDR1_ALIAS']}, {b['ADDRESS_2']}, {b['ADDRESS_3']}\","
-                    f"\"{b['DESCRIPTION']}\", "
-                    f"\"{b['BUILDING_PROSE']}\", "
-                    f"{float(b['TOTAL_RATING'])}, "
-                    f"{int(b['NUMBER_RATINGS'])}"
+                    f"{int(b.get('BUILDING'))}, "
+                    f"\"{b.get('BUILDING_ABBR')}\","
+                    f"\"{b.get('ADDR1_ALIAS')}, {b.get('ADDRESS_2')}, {b.get('ADDRESS_3')}\","
+                    f"\"{b.get('DESCRIPTION')}\", "
+                    f"\"{b.get('BUILDING_PROSE')}\", "
+                    f"{float(b['TOTAL_RATING'] if b.get('TOTAL_RATING') else 0.0)}, " 
+                    f"{int(b['NUMBER_RATINGS'] if b.get('NUMBER_RATINGS') else 0)}"
                     ");\n")
                 sql_file.write(stmt)
             

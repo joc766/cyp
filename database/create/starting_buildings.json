@@ -2,7 +2,6 @@
     "ServiceResponse": {
         "Buildings": [
             {
-                "ID": "0",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.929413",
                 "BUILDING_ABBR": "HQ",
@@ -22,7 +21,6 @@
                 "NUMBER_RATINGS": "0"
             },
             {
-                "ID": "1",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.930945",
                 "BUILDING_ABBR": "PWG",
@@ -61,7 +59,6 @@
                 "NUMBER_RATINGS": "0"
             },
             {
-                "ID": "3",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.926478",
                 "BUILDING_ABBR": "SC",
@@ -81,7 +78,6 @@
                 "NUMBER_RATINGS": "0"
             },
             {
-                "ID": "4",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.923669",
                 "BUILDING_ABBR": "ML",
@@ -100,7 +96,6 @@
                 "NUMBER_RATINGS": "0"
             },
             {
-                "ID": "5",
                 "SITE": "CEN",
                 "LONGITUDE": "-72.924933",
                 "HISTORICAL_NAME": "Sheffield Chemical Laboratory /Sheffield Laboratory of Engineering Mechanics/She",
@@ -119,6 +114,101 @@
                 "ADDRESS_2": "NEW HAVEN, CT",
                 "TOTAL_RATING": "0",
                 "NUMBER_RATINGS": "0"
+            },
+            {
+                "SITE": "ATH",
+                "LONGITUDE": "-72.959817",
+                "BUILDING_ABBR": "SMILOW",
+                "USAGE_DESCRIPTION": "ATHLETICS",
+                "ADDRESS_3": "06511",
+                "STATUS": "OPEN",
+                "BUILDING": "3640",
+                "DESCRIPTION": "SMILOW FIELD CENTER",
+                "BUILDING_PROSE": "Located at between Walter Camp Gate and the Bowl at Yale Field, were constructed in 1993 concurrently with the neighboring Connecticut Tennis Center. Yale Avenue Walter Camp Field",
+                "ADDR1_ALIAS": "249 DERBY AVENUE",
+                "MSAG_ALIAS": "DERBY AVE,  249",
+                "LATITUDE": "41.311237",
+                "ADDRESS_1": "DERBY AVENUE, 249",
+                "HISTORICAL_ALIAS": "OUTDOOR TENNIS COURT AREA",
+                "ADDRESS_2": "NEW HAVEN, CT"
+            },
+            {
+                "ADDRESS_3": "06510",
+                "SITE": "CEN",
+                "STATUS": "OPEN",
+                "BUILDING": "2670",
+                "DESCRIPTION": "OLD CAMPUS",
+                "ADDR1_ALIAS": "344 COLLEGE STREET",
+                "LONGITUDE": "-72.928578",
+                "MSAG_ALIAS": "COLLEGE ST, 344",
+                "LATITUDE": "41.308913",
+                "BUILDING_ABBR": "OLDCAMP",
+                "ADDRESS_1": "COLLEGE STREET, 344",
+                "ADDRESS_2": "NEW HAVEN, CT"
+            },
+            {
+                "SITE": "CEN",
+                "LONGITUDE": "-72.932166",
+                "BUILDING_ABBR": "PC",
+                "USAGE_DESCRIPTION": "DORMITORY",
+                "ADDRESS_3": "06511",
+                "STATUS": "OPEN",
+                "BUILDING": "2425",
+                "DESCRIPTION": "PIERSON COLLEGE",
+                "BUILDING_PROSE": "Opened in 1933, was the gift of Edward S. Harkness, BA 1897, and MA HON. 1925. It is a Georgian Quadrangle built of water-struck brick with stone trim. Pierson Tower dominates the group; a variety of interesting architectural features include a small whitewashed brick group decorated with fine iron stairs and railings in the Southern style and known as the \u201cSlave Quarters.\u201d The college is named to honor the Reverend Abraham Pierson, first Rector (President) of Yale, and contains dormitory accommodations for students, the college Dean\u2019s office, rooms for Fellows, a library, common rooms, dining hall, and a Master\u2019s house.  James Gamble Rogers was the architect.  See The Residential Colleges of Yale University. [231 Park Street]",
+                "ADDR1_ALIAS": "261 PARK STREET",
+                "MSAG_ALIAS": "PARK ST, 261",
+                "LATITUDE": "41.310049",
+                "ADDRESS_1": "PARK STREET, 261",
+                "ADDRESS_2": "NEW HAVEN, CT"
+            },
+            {
+                "SITE": "CEN",
+                "LONGITUDE": "-72.931252",
+                "BUILDING_ABBR": "DC",
+                "USAGE_DESCRIPTION": "DORMITORY",
+                "ADDRESS_3": "06511",
+                "STATUS": "OPEN",
+                "BUILDING": "2420",
+                "DESCRIPTION": "DAVENPORT COLLEGE",
+                "BUILDING_PROSE": "Georgian Revival in style, is built of water-struck brick with limestone trim except for the York Street facade, which is Modern Gothic, built of seam-faced granite and limestone to harmonize with the Memorial Quadrangle. It contains dormitory accommodations for students, the College Dean\u2019s Office, rooms for Fellows, a library, common rooms, dining hall, and a Master\u2019s house. Edward S. Harkness, BA 1897 MA HON, provided funds for its construction in 1930. 1925, and was completed in 1933. James Gamble Rogers was the architect. The name commemorates the Reverend John Davenport, one of the founders of New Haven Colony. The family arms appear high over the York Street entrance; to the left of the arch are the arms and motto of Coventry, England, where Davenport was born, and to the right the arms and motto of New Haven. See also the 1977 edition of The Residential Colleges of Yale University. [248 York Street] Main Campus [4.34]",
+                "ADDR1_ALIAS": "248 YORK STREET",
+                "MSAG_ALIAS": "YORK ST, 248",
+                "LATITUDE": "41.310418",
+                "ADDRESS_1": "YORK STREET, 248",
+                "ADDRESS_2": "NEW HAVEN, CT"
+            },
+            {
+                "SITE": "CEN",
+                "LONGITUDE": "-72.925392",
+                "BUILDING_ABBR": "BF",
+                "USAGE_DESCRIPTION": "DORMITORY",
+                "ADDRESS_3": "06511",
+                "STATUS": "OPEN",
+                "BUILDING": "1350",
+                "DESCRIPTION": "BENJAMIN FRANKLIN COLLEGE",
+                "ADDR1_ALIAS": "90 PROSPECT STREET",
+                "MSAG_ALIAS": "PROSPECT ST, 90",
+                "LATITUDE": "41.314576",
+                "ADDRESS_1": "PROSPECT STREET,  90",
+                "ADDRESS_2": "NEW HAVEN, CT"
+            },
+            {
+                "SITE": "CEN",
+                "LONGITUDE": "-72.931495",
+                "HISTORICAL_NAME": "Briton Hadden Memorial Bdg",
+                "BUILDING_ABBR": "YORK202",
+                "USAGE_DESCRIPTION": "ACADEMIC",
+                "ADDRESS_3": "06511",
+                "STATUS": "OPEN",
+                "BUILDING": "2450",
+                "DESCRIPTION": "YORK ST, 202",
+                "BUILDING_PROSE": "The Briton Hadden Memorial Building was erected in 1932 as the gift of the alumni and friends of the University in memory of Briton Hadden, BA 1920, for the use of the Yale Daily News. It is a \u201cCollegiate Gothic\u201d building reminiscent of Cotswold Tudor architecture, constructed of brick with limestone trim. Adams and Prentice were the architects",
+                "ADDR1_ALIAS": "202 YORK STREET",
+                "MSAG_ALIAS": "YORK ST, 202",
+                "LATITUDE": "41.309127",
+                "ADDRESS_1": "YORK STREET, 202",
+                "ADDRESS_2": "NEW HAVEN, CT"
             }
         ]
     }
