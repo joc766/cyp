@@ -1,0 +1,13 @@
+h1 {
+    color: red;
+}
+
+.resultRow:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+.resultRow.selected {
+    background-color: green;
+}
+
