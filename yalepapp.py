@@ -39,7 +39,7 @@ def login():
             # username invalid
             raise(e)
         except ValueError as e:
-            # password invalid
+            # password invalid 
             raise(e)
         
         session['user_id'] = user_id
