@@ -1,6 +1,9 @@
 PRAGMA foreign_keys = ON;
 
     DROP TABLE IF EXISTS buildings;
+    DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS reviews;
+    DROP TABLE IF EXISTS rooms;
 
     CREATE TABLE buildings(
         id INTEGER, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL,
@@ -18,3 +21,28 @@ INSERT INTO buildings VALUES(2425, "PC","261 PARK STREET, NEW HAVEN, CT, 06511",
 INSERT INTO buildings VALUES(2420, "DC","248 YORK STREET, NEW HAVEN, CT, 06511","DAVENPORT COLLEGE", "Georgian Revival in style, is built of water-struck brick with limestone trim except for the York Street facade, which is Modern Gothic, built of seam-faced granite and limestone to harmonize with the Memorial Quadrangle. It contains dormitory accommodations for students, the College Dean’s Office, rooms for Fellows, a library, common rooms, dining hall, and a Master’s house. Edward S. Harkness, BA 1897 MA HON, provided funds for its construction in 1930. 1925, and was completed in 1933. James Gamble Rogers was the architect. The name commemorates the Reverend John Davenport, one of the founders of New Haven Colony. The family arms appear high over the York Street entrance; to the left of the arch are the arms and motto of Coventry, England, where Davenport was born, and to the right the arms and motto of New Haven. See also the 1977 edition of The Residential Colleges of Yale University. [248 York Street] Main Campus [4.34]", 0.0, 0);
 INSERT INTO buildings VALUES(1350, "BF","90 PROSPECT STREET, NEW HAVEN, CT, 06511","BENJAMIN FRANKLIN COLLEGE", "None", 0.0, 0);
 INSERT INTO buildings VALUES(2450, "YORK202","202 YORK STREET, NEW HAVEN, CT, 06511","YORK ST, 202", "The Briton Hadden Memorial Building was erected in 1932 as the gift of the alumni and friends of the University in memory of Briton Hadden, BA 1920, for the use of the Yale Daily News. It is a “Collegiate Gothic” building reminiscent of Cotswold Tudor architecture, constructed of brick with limestone trim. Adams and Prentice were the architects", 0.0, 0);
+PRAGMA foreign_keys = ON;
+
+    CREATE TABLE users(
+        id INTEGER, netid TEXT NOT NULL, password TEXT NOT NULL, 
+        first_name TEXT NOT NULL, last_name TEXT NOT NULL, college TEXT NOT NULL,
+        year INT NOT NULL,
+        PRIMARY KEY(id));
+
+PRAGMA foreign_keys = ON;
+
+    CREATE TABLE reviews(
+        id INTEGER, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
+        comment TEXT NOT NULL, room_number INTEGER NOT NULL,
+        PRIMARY KEY(id),
+        FOREIGN KEY(building_id) REFERENCES buildings(id),
+        FOREIGN KEY(user_id) REFERENCES users(id),
+        FOREIGN KEY(room_number) REFERENCES room(id));
+
+PRAGMA foreign_keys = ON;
+
+    CREATE TABLE rooms(
+        id INTEGER, building_id INTEGER NOT NULL, name TEXT NOT NULL,
+        PRIMARY KEY(id),
+        FOREIGN KEY(building_id) REFERENCES buildings(id));
+

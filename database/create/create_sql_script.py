@@ -13,6 +13,9 @@ def main():
         starting_info = """PRAGMA foreign_keys = ON;
 
     DROP TABLE IF EXISTS buildings;
+    DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS reviews;
+    DROP TABLE IF EXISTS rooms;
 
     CREATE TABLE buildings(
         id INTEGER, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL,
@@ -37,36 +40,36 @@ def main():
                     ");\n")
                 sql_file.write(stmt)
 
-    #     users_table = """PRAGMA foreign_keys = ON;
+        users_table = """PRAGMA foreign_keys = ON;
 
-    # CREATE TABLE users(
-    #     id INTEGER, netid TEXT NOT NULL, password TEXT NOT NULL, 
-    #     first_name TEXT NOT NULL, last_name TEXT NOT NULL, college TEXT NOT NULL,
-    #     year INT NOT NULL,
-    #     PRIMARY KEY(id);\n\n"""
+    CREATE TABLE users(
+        id INTEGER, netid TEXT NOT NULL, password TEXT NOT NULL, 
+        first_name TEXT NOT NULL, last_name TEXT NOT NULL, college TEXT NOT NULL,
+        year INT NOT NULL,
+        PRIMARY KEY(id));\n\n"""
 
-    #     sql_file.write(users_table)
+        sql_file.write(users_table)
         
-    #     reviews_table = """PRAGMA foreign_keys = ON;
+        reviews_table = """PRAGMA foreign_keys = ON;
 
-    # CREATE TABLE reviews(
-    #     id INTEGER, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
-    #     comment TEXT NOT NULL, room_number INTEGER NOT NULL,
-    #     PRIMARY KEY(id),
-    #     FOREIGN KEY(building_id) REFERENCES buildings(id),
-    #     FOREIGN_KEY(user_id) REFERENCES users(id),
-    #     FOREIGN_KEY(room_number) REFERENCES room(id));\n\n"""
+    CREATE TABLE reviews(
+        id INTEGER, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
+        comment TEXT NOT NULL, room_number INTEGER NOT NULL,
+        PRIMARY KEY(id),
+        FOREIGN KEY(building_id) REFERENCES buildings(id),
+        FOREIGN KEY(user_id) REFERENCES users(id),
+        FOREIGN KEY(room_number) REFERENCES room(id));\n\n"""
     
-    #     sql_file.write(reviews_table)
+        sql_file.write(reviews_table)
     
-    #     rooms_table = """PRAGMA foreign_keys = ON;
+        rooms_table = """PRAGMA foreign_keys = ON;
 
-    # CREATE TABLE rooms(
-    #     id INTEGER, building_id INTEGER NOT NULL, name TEXT NOT NULL,
-    #     PRIMARY KEY(id),
-    #     FOREIGN KEY(building_id) REFERENCES buildings(id));\n\n"""
+    CREATE TABLE rooms(
+        id INTEGER, building_id INTEGER NOT NULL, name TEXT NOT NULL,
+        PRIMARY KEY(id),
+        FOREIGN KEY(building_id) REFERENCES buildings(id));\n\n"""
     
-    #     sql_file.write(rooms_table)
+        sql_file.write(rooms_table)
             
 
 if __name__ == "__main__":
