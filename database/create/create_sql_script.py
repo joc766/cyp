@@ -40,8 +40,9 @@ def main():
                     ");\n")
                 sql_file.write(stmt)
 
-        users_table = """PRAGMA foreign_keys = ON;
+        sql_file.write("\n")
 
+        users_table = """
     CREATE TABLE users(
         id INTEGER, netid TEXT NOT NULL, password TEXT NOT NULL, 
         first_name TEXT NOT NULL, last_name TEXT NOT NULL, college TEXT NOT NULL,
@@ -50,11 +51,10 @@ def main():
 
         sql_file.write(users_table)
         
-        reviews_table = """PRAGMA foreign_keys = ON;
-
+        reviews_table = """
     CREATE TABLE reviews(
         id INTEGER, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
-        comment TEXT NOT NULL, room_number INTEGER NOT NULL,
+        comment TEXT NOT NULL, date_time DATETIME, room_number INTEGER NOT NULL,
         PRIMARY KEY(id),
         FOREIGN KEY(building_id) REFERENCES buildings(id),
         FOREIGN KEY(user_id) REFERENCES users(id),
@@ -62,8 +62,7 @@ def main():
     
         sql_file.write(reviews_table)
     
-        rooms_table = """PRAGMA foreign_keys = ON;
-
+        rooms_table = """
     CREATE TABLE rooms(
         id INTEGER, building_id INTEGER NOT NULL, name TEXT NOT NULL,
         PRIMARY KEY(id),
