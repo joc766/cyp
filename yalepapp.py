@@ -62,12 +62,10 @@ def vote():
     response.headers["new_rating"] = new_rating
     return response
 
-@app.route('/submitReview', methods=['Post'])
-def comment():
-    building_name = request.form.get('building')
-    submitted_review = request.form.get('review')
-    print("submitted_review: ", submitted_review)
-    store_review = update_user_comments(submitted_review, building_name)
+@app.route('/submitReview', methods=['POST'])
+def submit_review():
+    submitted_review = request.form['reviewText']
+    store_review = update_user_comments(submitted_review)
     response = make_response('SUCCESS')
     response.headers["review"] = store_review
     return response
