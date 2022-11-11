@@ -51,19 +51,6 @@
                     success: handleRateSuccess
                 })
             }
-
-            function submitReview(){
-                url = '/submitReview'
-                let review = $('#review').val();
-                $.ajax({
-                    type: 'POST', 
-                    url: url,
-                    data: {
-                       submitted_review: review,
-                       building: "{{ name }}"
-                    },
-                })
-            }
             
             function setup(response){
                 console.log('setup')
