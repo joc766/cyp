@@ -9,6 +9,9 @@ class Building:
         self._total_rating = sqlRow["total_rating"]
         self._n_ratings = sqlRow["n_ratings"]
 
+    def get_id(self):
+        return self._id
+
     def get_name(self):
         return self._descrip
     

@@ -47,9 +47,25 @@ def update_rating(building_name, n_stars):
     return new_rating
 
 
-def get_user_reviews(user_id):
-    stmt = "SELECT comment FROM reviews WHERE user_id = ?"
-    return query(stmt, [user_id])
+def update_user_comments(review, building_name):
+    # get building id 
+    stmt1 = "SELECT id FROM buildings WHERE descrip = ?"
+    result = query(stmt1, [building_name])[0]
+    building_id = int(result[0])
+    '''update user with submitted comment'''
+    stmt = "INSERT INTO reviews (comment) WHERE building_id = ?"
+    result = query(stmt, [review, building_id])
+    return result
+
+def get_user_reviews(building_id):
+    stmt = "SELECT comment FROM reviews WHERE building_id = ?"
+    result = query(stmt, [building_id])
+    return result
+
+# def get_user_reviews(user_id):
+#     stmt = "SELECT comment FROM reviews WHERE user_id = ?"
+#     result = query(stmt, [user_id])
+#     return result
 
 
 def get_building_reviews(building_name):

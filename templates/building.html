@@ -2,7 +2,8 @@
  <html>
     <head>
         <title>Yale-P Website</title>
-        </head>
+        <link rel="stylesheet" href="../static/styles.css">
+    </head>
     <body>
         <h1>Building Details</h1>
         <br>
@@ -16,6 +17,17 @@
         <button class="rate_button" onclick="changeRating(3)">3</button>
         <button class="rate_button" onclick="changeRating(4)">4</button>
         <button class="rate_button" onclick="changeRating(5)">5</button>
+
+        <form action="/submitReview" method="GET">
+            <hr>
+            <label for="review">Post a comment/review</label><br>
+            <textarea rows="4" cols="50" type="text" id="review" name="review"></textarea><br>
+            <input type="submit" value="Post"> 
+        </form>
+        <h4>Comments</h4>
+        <div>
+            {{comments}}
+        </div>
 
 
         <script src=
@@ -37,6 +49,19 @@
                        building: "{{ name }}"
                     },
                     success: handleRateSuccess
+                })
+            }
+
+            function submitReview(){
+                url = '/submitReview'
+                let review = $('#review').val();
+                $.ajax({
+                    type: 'POST', 
+                    url: url,
+                    data: {
+                       submitted_review: review,
+                       building: "{{ name }}"
+                    },
                 })
             }
             
