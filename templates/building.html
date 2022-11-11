@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+ <html>
+    <head>
+        <title>Yale-P Website</title>
+        </head>
+    <body>
+        <h1>Building Details</h1>
+        <br>
+
+        <h5>Name</h5><strong>{{name}}</strong>
+        <h5>Address</h5><strong>{{address}}</strong>
+        <h5>Current Rating</h5><strong id="rating">{{rating}}</strong>
+        <h6>Rate this Building</h6>
+        <button class="rate_button" onclick="changeRating(1)">1</button>
+        <button class="rate_button" onclick="changeRating(2)">2</button>
+        <button class="rate_button" onclick="changeRating(3)">3</button>
+        <button class="rate_button" onclick="changeRating(4)">4</button>
+        <button class="rate_button" onclick="changeRating(5)">5</button>
+
+
+        <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+        </script>
+        <script>   
+            function handleRateSuccess(res, status, xhr) {
+                new_rating = xhr.getResponseHeader("new_rating")
+                $('#rating').html(new_rating)
+            }
+
+            function changeRating(num){
+                url = '/submitRating'
+                $.ajax({
+                    type: 'POST', 
+                    url: url,
+                    data: {
+                       n_stars: num,
+                       building: "{{ name }}"
+                    },
+                    success: handleRateSuccess
+                })
+            }
+            
+            function setup(response){
+                console.log('setup')
+            }
+            $('document').ready(setup);
+        </script>
+    </body>
+    </html>

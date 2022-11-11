@@ -1,11 +1,11 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template
 from flask import render_template
-from helpers import get_buildings_by_name
+from helpers import get_buildings_by_name, update_rating
 
 #we are using jinja
 #-----------------------------------------------------------------------
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__, template_folder='templates')
 
 #-----------------------------------------------------------------------
 #initial page
@@ -28,8 +28,7 @@ def get_buildings():
     matches = get_buildings_by_name(building_name)
 
     html = ''
-    #pattern = '<strong>%s</strong>: %s (%d stars)<br>'
-    pattern = '<button onclick="\"location.href=/info?name=%s\";">%s</button>'
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
     for building in matches:
         html += pattern % (building.get_name(), building.get_name())
     
@@ -37,7 +36,27 @@ def get_buildings():
     return response
 
 @app.route('/info', methods=['GET'])
-def building_details(info):
-    name = info[0]
-    address = info[1]
-    rating = info[2]
+def building_details():
+    name = request.args.get('name')
+    building = get_buildings_by_name(name)[0]
+    building_info = building.to_tuple()
+    html = render_template('building.html', name=building_info[0], 
+        address=building_info[1], rating=building_info[2])
+    response = make_response(html)
+    return response
+
+@app.route('/submitRating', methods=['POST'])
+def vote():
+    building_name = request.form.get('building')
+    n_stars = int(request.form.get('n_stars'))
+
+    new_rating= update_rating(building_name, n_stars)
+
+    response = make_response('SUCCESS')
+    response.headers["new_rating"] = new_rating
+    return response
+
+    
+
+
+    

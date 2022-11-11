@@ -1,0 +1,4 @@
+__pycache__
+bin
+.DS_STORE
+*.pyc 
