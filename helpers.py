@@ -6,43 +6,52 @@ from database.models.building import Building
 DB_FILE = "file:./database/buildings.sqlite?mode=rw"
 
 # TODO write general query function
-def get_buildings_by_name(name):
-    buildings = []
-    
-    with sqlite3.connect(DB_FILE, uri=True) as conn:
 
+def query(stmt, values):
+    result = []
+    with sqlite3.connect(DB_FILE, uri=True) as conn:
         conn.row_factory = sqlite3.Row
 
         with closing(conn.cursor()) as cursor:
-
-            stmt = "SELECT id, abbr, descrip, building_prose, addr, total_rating, n_ratings FROM buildings WHERE \
-descrip LIKE :descrip;"
-            values = {"descrip": '%' + name + '%'}
             cursor.execute(stmt, values)
+            result = cursor.fetchall()
+        
+    return result
 
-            row = cursor.fetchone()
-            while row is not None:
-                building = Building(row)
-                buildings.append(building)
-                row = cursor.fetchone()
+
+def get_buildings_by_name(name):
+    buildings = []
+
+    stmt = "SELECT id, abbr, descrip, building_prose, addr, total_rating, n_ratings FROM buildings WHERE \
+            descrip LIKE :descrip;"
+    values = {"descrip": '%' + name + '%'}
+    
+    results = query(stmt, values)
+    
+    for row in results:
+        building = Building(row)
+        buildings.append(building)
     
     return buildings
 
+
 def update_rating(building_name, n_stars):
+    stmt1 = "SELECT total_rating, n_ratings, id FROM buildings WHERE descrip = ?"
+    result = query(stmt1, [building_name])[0]
+    total_rating = float(result[0])
+    n_ratings = int(result[1])
 
-    with sqlite3.connect(DB_FILE, uri=True) as conn:
+    new_rating = float(((total_rating * n_ratings) + n_stars) / (n_ratings + 1))
+    stmt2 = "UPDATE buildings SET total_rating = ?, n_ratings = ? WHERE id = ?"
+    query(stmt2, [new_rating, n_ratings + 1, result[2]])
+    return new_rating
 
-        conn.row_factory = sqlite3.Row
 
-        with closing(conn.cursor()) as cursor:
+def get_user_reviews(user_id):
+    stmt = "SELECT comment FROM reviews WHERE user_id = ?"
+    return query(stmt, [user_id])
 
-            stmt1 = "SELECT total_rating, n_ratings, id FROM buildings WHERE descrip = ?"
-            cursor.execute(stmt1, [building_name])
-            result = cursor.fetchone()
-            total_rating = float(result[0])
-            n_ratings = int(result[1])
 
-            new_rating = float(((total_rating * n_ratings) + n_stars) / (n_ratings + 1))
-            stmt2 = "UPDATE buildings SET total_rating = ?, n_ratings = ? WHERE id = ?"
-            cursor.execute(stmt2, [new_rating, n_ratings + 1, result[2]])
-            return new_rating
+def get_building_reviews(building_name):
+    stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
+    return query(stmt, [building_name])
