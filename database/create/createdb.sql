@@ -6,8 +6,7 @@ PRAGMA foreign_keys = ON;
     DROP TABLE IF EXISTS rooms;
 
     CREATE TABLE buildings(
-        id INTEGER, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL,
-        PRIMARY KEY(id));
+        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);
 
 INSERT INTO buildings VALUES(2105, "HQ","320 YORK STREET, NEW HAVEN, CT, 06511","HUMANITIES QUADRANGLE", "Was completed in 1932 with funds provided by the trustees of the estate of John W. Sterling, BA 1864. The building, Collegiate Gothic with modernistic Arts & Craft and Art Nouveau touches, is of brick and seam-faced granite with limestone trim.  James Gamble Rogers was the architect. The use of various interconnected low buildings, grouped around two courts with a central fourteen-story tower was characteristic of Rogers conscious effort to create urban compositions. The Hall was designed to be self-contained.  It includes dormitory accommodations for students, faculty apartments, and classrooms, lecture halls, faculty offices, dining hall and common rooms. The office of the Provost is also located here.. In 1993 accessibility ramps were built at the main entrance, and in 1997, the McDougal  --                                                                           . [320 York Street] Main Campus [ 5.10]", 0.0, 0);
 INSERT INTO buildings VALUES(1440, "PWG","70 TOWER PARKWAY, NEW HAVEN, CT, 06511","PAYNE WHITNEY GYM", "Completed in 1932, is a memorial to Payne Whitney, BA 1898, the gift of his wife and his children, Mrs. Charles Shipman Payson and John Hay Whitney, BA 1926, MA HON 1956. The building is Gothic, constructed of Briar Hill sandstone. This second- largest athletic facility in the world boast twelve acres of floor space on sixteen levels. The central portion contains rowing tanks, practice pool, locker rooms, basketball courts, rooms for boxing, wrestling, and fencing, the trophy room, and offices. In the northern wing are squash courts, a running track, and a basketball amphitheatre. The southern wing contains the exhibition pool and handball courts. Architect John Russell Pope designed the structure to accommodate the then 3,500 students then attending Yale College. A  sports rehabilitation center was built into the gym in 1994, as well as the start of a comprehensive restoration and renovation. The building will be extensively altered and wings added. The architect is Ellerbe Becket Architects in Collaboration with Cesar Pelli & Associates. In 1995, the John J. Lee Amphitheatre was named in honor of John L. Lee ‘58 E, ‘59 M.Eng. a star basketball player in his college days, Mr. Lee gave generously in support of the gym. In 1996, six new international sized squash courts were constructed, replacing eight existing U.S. format courts. Colonel  William K. Lanman, Sheffield Scientific School class of 28 is the donor of a large new wing designed to accommodate four basketball/ volleyball courts and an elevated indoor track  scheduled to be in use in 1999. By the office of Cesar Pelli.  [70 Tower Parkway", 0.0, 0);
@@ -24,23 +23,20 @@ INSERT INTO buildings VALUES(2450, "YORK202","202 YORK STREET, NEW HAVEN, CT, 06
 
 
     CREATE TABLE users(
-        id INTEGER, username TEXT NOT NULL, password_hash TEXT NOT NULL, 
+        id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password_hash TEXT NOT NULL, 
         first_name TEXT NOT NULL, last_name TEXT NOT NULL, college TEXT NOT NULL,
-        year INT NOT NULL,
-        PRIMARY KEY(id));
+        year INT NOT NULL);
 
 
     CREATE TABLE reviews(
-        id INTEGER, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
+        id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
         comment TEXT NOT NULL, date_time DATETIME, room_number INTEGER NOT NULL,
-        PRIMARY KEY(id),
         FOREIGN KEY(building_id) REFERENCES buildings(id),
         FOREIGN KEY(user_id) REFERENCES users(id),
         FOREIGN KEY(room_number) REFERENCES room(id));
 
 
     CREATE TABLE rooms(
-        id INTEGER, building_id INTEGER NOT NULL, name TEXT NOT NULL,
-        PRIMARY KEY(id),
+        id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, name TEXT NOT NULL,
         FOREIGN KEY(building_id) REFERENCES buildings(id));
 
