@@ -67,10 +67,8 @@ def register():
 
         except Exception as e:
             raise(e)
-
-        
-
-
+    
+    return redirect('/login')
 
 
 @app.route('/search', methods=['GET'])
@@ -111,8 +109,6 @@ def vote():
     response = make_response('SUCCESS')
     response.headers["new_rating"] = new_rating
     return response
-
-    
 
 
     
