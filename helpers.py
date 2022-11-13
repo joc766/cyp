@@ -47,13 +47,13 @@ def update_rating(building_name, n_stars):
     return new_rating
 
 
-def update_user_comments(review):
+def add_comment(building_id, user_id, rating, comment, date_time, room_number):
     '''update user with submitted comment'''
-    stmt = "INSERT INTO reviews VALUES (?)"
-    result = query(stmt, [review])
+    stmt = "INSERT INTO reviews (building_id, user_id, rating, comment, room_number) VALUES (?, ?, ?, ?, ?, ?)"
+    result = query(stmt, [building_id, user_id, rating, comment, room_number])
     return result
 
-def get_user_reviews(building_id):
+def get_user_comments(building_id):
     stmt = "SELECT comment FROM reviews WHERE building_id = ?"
     result = query(stmt, [building_id])
     return result

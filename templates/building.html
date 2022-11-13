@@ -18,17 +18,20 @@
         <button class="rate_button" onclick="changeRating(4)">4</button>
         <button class="rate_button" onclick="changeRating(5)">5</button>
 
-        <form action="\submitReview" method="POST">
+        <form action="\submitComment" method="POST">
             <hr>
-            <label for="review">Post a comment/review</label>
+            <label for="commentText">Leave a comment!</label>
             <br>
-            <textarea rows="4" cols="50" type="text" name="reviewText" ></textarea>
+            <textarea id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
             <br>
-            <input type="submit" value="Post"> 
+            <button id="commentButton" type="button">Post</button>
+            <!-- <input type="submit" value="Post" onclick="addComment()">  -->
         </form>
         <h4>Comments</h4>
-        <div>
-            {{comments}}
+        <div id="comments">
+            <!-- {% for comment in comments %}
+            <p> {{comment['comment']}} </p>
+            {% endfor %} -->
         </div>
 
 
@@ -42,20 +45,61 @@
             }
 
             function changeRating(num){
-                url = '/submitRating'
+                url = '/submitRating';
                 $.ajax({
                     type: 'POST', 
                     url: url,
                     data: {
-                       n_stars: num,
-                       building: "{{ name }}"
+                        n_stars: num,
+                        building: "{{ name }}"
                     },
                     success: handleRateSuccess
+                })
+            }
+
+            function renderComments(data, res, xhr) {
+                html = ""
+                for (let i = 0; i < data.length; i++) {
+                    html += "<p>" + data[i] + "</p>"
+                }
+                $("#comments").html(html)
+            }
+
+            function loadComments() {
+                $("#commentTextInput").val('');
+                url = '/loadComments';
+                $.ajax({
+                    type: 'GET', 
+                    url: url,
+                    data: {
+                        building_id: "{{ building_id }}",
+                    },
+                    success: renderComments
+                })
+            }
+
+            function addComment(){
+                url = '/submitComment';
+                let date_time = new Date();
+                date_time = date_time.toLocaleString();
+                $.ajax({
+                    type: 'POST', 
+                    url: url,
+                    data: {
+                        commentText: $('#commentTextInput').val(),
+                        building_id: "{{ building_id }}",
+                        rating: "{{ rating }}",
+                        date_time: date_time,
+                        room_num: "{{ room_num }}",
+                    },
+                    success: loadComments
                 })
             }
             
             function setup(response){
                 console.log('setup')
+                loadComments()
+                $('#commentButton').on('click', addComment)
             }
             $('document').ready(setup);
         </script>
