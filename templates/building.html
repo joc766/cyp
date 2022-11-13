@@ -22,20 +22,21 @@
                     <h5>Address</h5><strong>{{address}}</strong>
                     <h5>Current Rating</h5><strong id="rating">{{rating}}</strong>
                     <h6>Rate this Building</h6>
-                    <button class="rate_button" onclick="changeRating(1)">1</button>
-                    <button class="rate_button" onclick="changeRating(2)">2</button>
-                    <button class="rate_button" onclick="changeRating(3)">3</button>
-                    <button class="rate_button" onclick="changeRating(4)">4</button>
-                    <button class="rate_button" onclick="changeRating(5)">5</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(1)">1</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(2)">2</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(3)">3</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(4)">4</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(5)">5</button>
 
                     <form action="\submitComment" method="POST">
                         <hr>
                         <label for="commentText">Leave a comment!</label>
                         <br>
-                        <textarea id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
+                        <textarea class="form-control" id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
                         <br>
-                        <button id="commentButton" type="button">Post</button>
+                        <button class="btn btn-outline-primary" id="commentButton" type="button">Post</button>
                     </form>
+                    <br>
                     <h4>Comments</h4>
                     <div id="comments">
                     </div>
