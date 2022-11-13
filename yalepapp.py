@@ -124,7 +124,8 @@ def vote():
 @app.route('/submitComment', methods=['POST'])
 def submit_comment():
     building_id = int(request.form.get('building_id'))
-    user_id = session['user_id'] if session['user_id'] else int(1)
+    # user_id = session['user_id'] if session['user_id'] else int(1)
+    user_id = int(1)
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
     date_time = request.form.get('date_time')
