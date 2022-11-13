@@ -75,10 +75,7 @@ def submit_comment():
     date_time = request.form.get('date_time')
     room_num = int(request.form.get('room_num'))
 
-    print("REQUEST: ", request.form)
-
     store_review = add_comment(building_id, user_id, rating, comment, date_time, room_num)
-
     response = make_response('SUCCESS')
     response.headers["review"] = store_review
     return response

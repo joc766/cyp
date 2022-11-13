@@ -58,12 +58,6 @@ def get_user_comments(building_id):
     result = query(stmt, [building_id])
     return result
 
-# def get_user_reviews(user_id):
-#     stmt = "SELECT comment FROM reviews WHERE user_id = ?"
-#     result = query(stmt, [user_id])
-#     return result
-
-
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
     return query(stmt, [building_name])
