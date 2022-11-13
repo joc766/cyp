@@ -9,6 +9,9 @@ class Building:
         self._total_rating = sqlRow["total_rating"]
         self._n_ratings = sqlRow["n_ratings"]
 
+    def get_id(self):
+        return self._id
+
     def get_name(self):
         return self._descrip
     
@@ -22,8 +25,8 @@ class Building:
         return self._total_rating
 
     def to_tuple(self):
-        # returns (name, address, rating)
-        return (self._descrip, self._address, self._total_rating)
+        # returns (id, name, address, details, ratings)
+        return (self._id, self._descrip, self._address, self._building_prose, self._total_rating)
 
     def to_xml(self):
         pass # TODO ?
