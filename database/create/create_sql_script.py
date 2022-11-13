@@ -18,8 +18,7 @@ def main():
     DROP TABLE IF EXISTS rooms;
 
     CREATE TABLE buildings(
-        id INTEGER, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL,
-        PRIMARY KEY(id));\n\n"""
+        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
 
         sql_file.write(starting_info)
 
@@ -44,18 +43,16 @@ def main():
 
         users_table = """
     CREATE TABLE users(
-        id INTEGER, netid TEXT NOT NULL, password TEXT NOT NULL, 
+        id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password_hash TEXT NOT NULL, 
         first_name TEXT NOT NULL, last_name TEXT NOT NULL, college TEXT NOT NULL,
-        year INT NOT NULL,
-        PRIMARY KEY(id));\n\n"""
+        year INT NOT NULL);\n\n"""
 
         sql_file.write(users_table)
         
         reviews_table = """
     CREATE TABLE reviews(
-        id INTEGER, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
+        id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
         comment TEXT NOT NULL, date_time DATETIME, room_number INTEGER NOT NULL,
-        PRIMARY KEY(id),
         FOREIGN KEY(building_id) REFERENCES buildings(id),
         FOREIGN KEY(user_id) REFERENCES users(id),
         FOREIGN KEY(room_number) REFERENCES room(id));\n\n"""
@@ -64,8 +61,7 @@ def main():
     
         rooms_table = """
     CREATE TABLE rooms(
-        id INTEGER, building_id INTEGER NOT NULL, name TEXT NOT NULL,
-        PRIMARY KEY(id),
+        id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, name TEXT NOT NULL,
         FOREIGN KEY(building_id) REFERENCES buildings(id));\n\n"""
     
         sql_file.write(rooms_table)

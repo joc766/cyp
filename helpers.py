@@ -1,7 +1,10 @@
 import sqlite3
 from contextlib import closing
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 from database.models.building import Building
+
 
 DB_FILE = "file:./database/buildings.sqlite?mode=rw"
 
@@ -17,6 +20,26 @@ def query(stmt, values):
             result = cursor.fetchall()
         
     return result
+
+def insert_query(stmt, values):
+    with sqlite3.connect(DB_FILE, uri=True) as conn:
+
+        with closing(conn.cursor()) as cursor:
+            cursor.execute(stmt, values)
+            row_id = cursor.lastrowid
+        
+    return row_id
+
+def verify_login(username, password):
+    stmt = "SELECT id, password_hash FROM users WHERE username = ?;"
+    result = query(stmt, [username])
+    if len(result) == 0:
+        raise KeyError('username not found')
+    pwd_hash = result[0][1]
+    if not check_password_hash(pwd_hash, password):
+        raise ValueError('incorrect password')
+
+    return result[0][0] # returns id
 
 
 def get_buildings_by_name(name):
