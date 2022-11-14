@@ -70,10 +70,10 @@ def update_rating(building_name, n_stars):
     return new_rating
 
 
-def add_comment(building_id, user_id, rating, comment, date_time, room_number):
+def add_comment(building_id, user_id, rating, date_time, comment):
     '''update user with submitted comment'''
-    stmt = "INSERT INTO reviews (building_id, user_id, rating, comment, room_number) VALUES (?, ?, ?, ?, ?)"
-    result = query(stmt, [building_id, user_id, rating, comment, room_number])
+    stmt = "INSERT INTO reviews (building_id, user_id, rating, date_time, comment, up_votes, down_votes) VALUES (?, ?, ?, ?, ?, 0, 0)"
+    result = query(stmt, [building_id, user_id, rating, date_time, comment])
     return result
 
 def get_user_comments(building_id):
@@ -84,3 +84,18 @@ def get_user_comments(building_id):
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
     return query(stmt, [building_name])
+
+def update_comment_voting(is_upvote, review_id):
+    stmt1 = "SELECT up_votes, down_votes FROM reviews WHERE id = ?"
+    result = query(stmt1, [review_id])[0]
+    up_votes = int(result[0])
+    down_votes = int(result[1])
+    if is_upvote:
+        stmt2 = "UPDATE reviews SET up_votes = ? WHERE id = ?"
+        up_votes += 1
+        query(stmt2, [up_votes, review_id])
+    else:
+        stmt2 = "UPDATE reviews SET up_votes = ? WHERE id = ?"
+        down_votes += 1
+        query(stmt2, [down_votes, review_id])
+    return [up_votes, down_votes]

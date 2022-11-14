@@ -12,10 +12,9 @@ def main():
     with open(DB_LOC, mode="w") as sql_file:
         starting_info = """PRAGMA foreign_keys = ON;
 
-    DROP TABLE IF EXISTS buildings;
-    DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS reviews;
-    DROP TABLE IF EXISTS rooms;
+    DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS buildings;
 
     CREATE TABLE buildings(
         id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
@@ -52,19 +51,18 @@ def main():
         reviews_table = """
     CREATE TABLE reviews(
         id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
-        comment TEXT NOT NULL, date_time DATETIME, room_number INTEGER NOT NULL,
+        comment TEXT NOT NULL, date_time DATETIME, up_votes INTEGER NOT NULL, down_votes INTEGER NOT NULL,
         FOREIGN KEY(building_id) REFERENCES buildings(id),
-        FOREIGN KEY(user_id) REFERENCES users(id),
-        FOREIGN KEY(room_number) REFERENCES room(id));\n\n"""
+        FOREIGN KEY(user_id) REFERENCES users(id));\n\n"""
     
         sql_file.write(reviews_table)
     
-        rooms_table = """
-    CREATE TABLE rooms(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, name TEXT NOT NULL,
-        FOREIGN KEY(building_id) REFERENCES buildings(id));\n\n"""
+    #     rooms_table = """
+    # CREATE TABLE rooms(
+    #     id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, name TEXT NOT NULL,
+    #     FOREIGN KEY(building_id) REFERENCES buildings(id));\n\n"""
     
-        sql_file.write(rooms_table)
+    #     sql_file.write(rooms_table)
             
 
 if __name__ == "__main__":

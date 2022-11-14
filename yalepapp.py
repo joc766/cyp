@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 from helpers import get_buildings_by_name, update_rating, verify_login
 from decorators import login_required
 from database.models.user import User
+from datetime import datetime
 
 #we are using jinja
 #-----------------------------------------------------------------------
@@ -102,11 +103,11 @@ def building_details():
     details = building_info[3]
     rating = building_info[4]
 
-    room_num = 1
+    # room_num = 1
     comments = get_user_comments(building_id)
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, comments=comments, room_num=room_num)
+        address=address, details=details, rating=rating, comments=comments)
     response = make_response(html)
     return response
 
@@ -128,10 +129,10 @@ def submit_comment():
     user_id = int(1)
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
-    date_time = request.form.get('date_time')
-    room_num = int(request.form.get('room_num'))
+    date_time = datetime.now()
+    # room_num = int(request.form.get('room_num'))
 
-    store_review = add_comment(building_id, user_id, rating, comment, date_time, room_num)
+    store_review = add_comment(building_id, user_id, rating, date_time, comment)
     response = make_response('SUCCESS')
     response.headers["review"] = store_review
     return response
