@@ -106,7 +106,7 @@ def building_details():
 
     # room_num = 1
     reviews = get_reviews(building_id)
-    
+
     comments = []
     for review in reviews:
         comments.append(review[0])
@@ -153,7 +153,7 @@ def load_comments():
     comments = []
     for review in reviews:
         comments.append(review[0])
-    comments = [c['comment'] for c in comments]
+    # comments = [c['comment'] for c in comments]
     return comments
 
     
