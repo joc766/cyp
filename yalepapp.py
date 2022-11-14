@@ -6,16 +6,23 @@ from werkzeug.security import generate_password_hash
 from helpers import get_buildings_by_name, update_rating, verify_login
 from decorators import login_required
 from database.models.user import User
+from flask_session import Session
+from tempfile import mkdtemp
 
 #we are using jinja
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='templates')
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_FILE_DIR"] = mkdtemp()
+Session(app)
 
 #-----------------------------------------------------------------------
 #initial page
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
+@login_required
 def index():
     html = render_template('index.html')
     response = make_response(html)
@@ -90,7 +97,9 @@ def get_buildings():
     response = make_response(html)
     return response
 
+
 @app.route('/info', methods=['GET'])
+@login_required
 def building_details():
     name = request.args.get('name')
     building = get_buildings_by_name(name)[0]
