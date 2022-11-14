@@ -1,12 +1,11 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, add_comment, get_reviews, get_comments_keyword
+from helpers import get_buildings_by_name, update_rating, add_comment, get_reviews, get_reviews_keyword
 from werkzeug.security import generate_password_hash
 
 from helpers import get_buildings_by_name, update_rating, verify_login
 from decorators import login_required
 from database.models.user import User
-from database.models.reviews import Review
 from datetime import datetime
 
 #we are using jinja
@@ -105,14 +104,17 @@ def building_details():
     rating = building_info[4]
 
     # room_num = 1
-    reviews = get_reviews(building_id)
+    # reviews = get_reviews(building_id)
+    # toReturn = []
+    # for review in reviews:
+    #     toReturn.append(review.to_list())
 
-    comments = []
-    for review in reviews:
-        comments.append(review[0])
+    # comments = []
+    # for review in reviews:
+    #     comments.append()
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, comments=comments)
+        address=address, details=details, rating=rating)
     response = make_response(html)
     return response
 
@@ -137,11 +139,11 @@ def submit_comment():
     date_time = datetime.now()
     # room_num = int(request.form.get('room_num'))
 
-    new_review = Review(building_id, user_id, rating, date_time, comment, 0, 0)
-    new_review.insert_into_db()
-    # store_review = add_comment(building_id, user_id, rating, date_time, comment)
+    # new_review = Review(building_id, user_id, rating, date_time, comment, 0, 0)
+    # new_review.insert_into_db()
+    store_review = add_comment(building_id, user_id, rating, date_time, comment)
     response = make_response('SUCCESS')
-    response.headers["review"] = new_review.comment
+    response.headers["review"] = store_review
     return response
     
 @app.route('/loadComments', methods=['GET'])
@@ -150,11 +152,10 @@ def load_comments():
     building_id = request.args.get('building_id')
 
     reviews = get_reviews(building_id)
-    comments = []
+    toReturn = []
     for review in reviews:
-        comments.append(review[0])
-    # comments = [c['comment'] for c in comments]
-    return comments
+        toReturn.append(review.to_list())
+    return toReturn
 
 @app.route('/searchComments', methods=['GET'])
 def get_comments():
@@ -164,15 +165,12 @@ def get_comments():
         response = make_response('')
         return response
 
-    matches = get_comments_keyword(building_id, keyword)
+    reviews = get_reviews_keyword(building_id, keyword)
+    toReturn = []
+    for review in reviews:
+        toReturn.append(review.to_list())
+    return toReturn
 
-    html = ''
-    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
-    for building in matches:
-        html += pattern % (building.get_name(), building.get_name())
-    
-    response = make_response(html)
-    return response
 
 
     

@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from database.models.building import Building
+from database.models.reviews import Review
 
 
 DB_FILE = "file:./database/buildings.sqlite?mode=rw"
@@ -77,9 +78,14 @@ def add_comment(building_id, user_id, rating, date_time, comment):
     return result
 
 def get_reviews(building_id):
+    reviews = []
     stmt = "SELECT comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
-    result = query(stmt, [building_id])
-    return result
+    #stmt = "SELECT id, building_id, user_id, rating, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
+    results = query(stmt, [building_id])
+    for row in results:
+        review = Review(row)
+        reviews.append(review)
+    return reviews
 
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
@@ -100,5 +106,11 @@ def update_comment_voting(is_upvote, review_id):
         query(stmt2, [down_votes, review_id])
     return [up_votes, down_votes]
 
-def get_comments_keyword(building_id, keyword):
-    pass
+def get_reviews_keyword(building_id, keyword):
+    reviews = []
+    stmt = "SELECT comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ? AND comment LIKE ?"
+    results = query(stmt, [building_id, '%'+keyword+'%'])
+    for row in results:
+        review = Review(row)
+        reviews.append(review)
+    return reviews

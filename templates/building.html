@@ -84,7 +84,7 @@
 
             let request = null;
 
-            function getComments()
+            function searchComments()
             {
                 let keyword = $('#commentInput').val();
                 keyword = encodeURIComponent(keyword);
@@ -99,14 +99,22 @@
                 data: {
                     building_id: "{{ building_id }}",
                 },
-                success: handleResponse
+                success: renderComments
                 });
             }
 
+            
             function renderComments(data, res, xhr) {
                 html = ""
                 for (let i = 0; i < data.length; i++) {
-                    html += "<p>" + data[i] + "</p>"
+                    html += '<div class="comments">'
+                    html += '<h6>' + data[i][1] + '</h6>'
+                    html += '<p>' + data[i][0] + '</p>'
+                    html += "<h6>upvotes: </h6>"
+                    html += '<h6>' + data[i][2] + '</h6>'
+                    html += "<h6>downvotes:</h6>"
+                    html += '<h6>' + data[i][3] + '</h6>'
+                    html += '</div>'
                 }
                 $("#comments").html(html)
             }
@@ -146,7 +154,7 @@
                 console.log('setup')
                 loadComments()
                 $('#commentButton').on('click', addComment)
-                $('#commentInput').on('input', getComments);
+                $('#commentInput').on('input', searchComments);
             }
             $('document').ready(setup);
         </script>
