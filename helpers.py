@@ -99,3 +99,6 @@ def update_comment_voting(is_upvote, review_id):
         down_votes += 1
         query(stmt2, [down_votes, review_id])
     return [up_votes, down_votes]
+
+def get_comments_keyword(building_id, keyword):
+    pass

@@ -38,8 +38,9 @@
                     </form>
                     <br>
                     <h4>Comments</h4>
-                    <div id="comments">
-                    </div>
+                    Search building comments:
+                    <input type="text" id="commentInput" autoFocus>
+                    <div id="comments"></div>
 
                 </div>
 
@@ -72,6 +73,34 @@
                     },
                     success: handleRateSuccess
                 })
+            }
+
+            function handleResponse(response)
+            {
+                let inner = ''
+                if (response !== '') inner = "<hr>" + response;
+                $('#comments').html(inner);
+            }
+
+            let request = null;
+
+            function getComments()
+            {
+                let keyword = $('#commentInput').val();
+                keyword = encodeURIComponent(keyword);
+                let url = '/searchComments?keyword=' + keyword
+
+                if (request != null)
+                request.abort();
+
+                request = $.ajax({
+                type: 'GET',
+                url: url,
+                data: {
+                    building_id: "{{ building_id }}",
+                },
+                success: handleResponse
+                });
             }
 
             function renderComments(data, res, xhr) {
@@ -117,6 +146,7 @@
                 console.log('setup')
                 loadComments()
                 $('#commentButton').on('click', addComment)
+                $('#commentInput').on('input', getComments);
             }
             $('document').ready(setup);
         </script>
