@@ -2,42 +2,60 @@
  <html>
     <head>
         <title>Yale-P Website</title>
-        <link rel="stylesheet" href="../static/styles.css">
+        <!-- Latest compiled and minified CSS -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+
+        <!-- Optional theme -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+
+        <link rel="stylesheet" href="../static/bootstrap.min.css"
     </head>
     <body>
-        <h1>Building Details</h1>
-        <br>
+        <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
+            <div class="container-fluid">
+                <h1>Building Details</h1>
+                <br>
 
-        <h5>Name</h5><strong>{{name}}</strong>
-        <h5>Address</h5><strong>{{address}}</strong>
-        <h5>Current Rating</h5><strong id="rating">{{rating}}</strong>
-        <h6>Rate this Building</h6>
-        <button class="rate_button" onclick="changeRating(1)">1</button>
-        <button class="rate_button" onclick="changeRating(2)">2</button>
-        <button class="rate_button" onclick="changeRating(3)">3</button>
-        <button class="rate_button" onclick="changeRating(4)">4</button>
-        <button class="rate_button" onclick="changeRating(5)">5</button>
+                </div class="row">
 
-        <form action="\submitComment" method="POST">
-            <hr>
-            <label for="commentText">Leave a comment!</label>
-            <br>
-            <textarea id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
-            <br>
-            <button id="commentButton" type="button">Post</button>
-            <!-- <input type="submit" value="Post" onclick="addComment()">  -->
-        </form>
-        <h4>Comments</h4>
-        <div id="comments">
-            <!-- {% for comment in comments %}
-            <p> {{comment['comment']}} </p>
-            {% endfor %} -->
+                    <h5>Name</h5><strong>{{name}}</strong>
+                    <h5>Address</h5><strong>{{address}}</strong>
+                    <h5>Current Rating</h5><strong id="rating">{{rating}}</strong>
+                    <h6>Rate this Building</h6>
+                    <button class="btn btn-outline-primary" onclick="changeRating(1)">1</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(2)">2</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(3)">3</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(4)">4</button>
+                    <button class="btn btn-outline-primary" onclick="changeRating(5)">5</button>
+
+                    <form action="\submitComment" method="POST">
+                        <hr>
+                        <label for="commentText">Leave a comment!</label>
+                        <br>
+                        <textarea class="form-control" id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
+                        <br>
+                        <button class="btn btn-outline-primary" id="commentButton" type="button">Post</button>
+                    </form>
+                    <br>
+                    <h4>Comments</h4>
+                    Search building comments:
+                    <input type="text" id="commentInput" autoFocus>
+                    <div id="comments"></div>
+
+                </div>
+
+            </div>
         </div>
 
 
-        <script src=
-"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+        <script 
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
         </script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+        </script>
+
         <script>   
             function handleRateSuccess(res, status, xhr) {
                 new_rating = xhr.getResponseHeader("new_rating")
@@ -55,6 +73,34 @@
                     },
                     success: handleRateSuccess
                 })
+            }
+
+            function handleResponse(response)
+            {
+                let inner = ''
+                if (response !== '') inner = "<hr>" + response;
+                $('#comments').html(inner);
+            }
+
+            let request = null;
+
+            function getComments()
+            {
+                let keyword = $('#commentInput').val();
+                keyword = encodeURIComponent(keyword);
+                let url = '/searchComments?keyword=' + keyword
+
+                if (request != null)
+                request.abort();
+
+                request = $.ajax({
+                type: 'GET',
+                url: url,
+                data: {
+                    building_id: "{{ building_id }}",
+                },
+                success: handleResponse
+                });
             }
 
             function renderComments(data, res, xhr) {
@@ -100,6 +146,7 @@
                 console.log('setup')
                 loadComments()
                 $('#commentButton').on('click', addComment)
+                $('#commentInput').on('input', getComments);
             }
             $('document').ready(setup);
         </script>
