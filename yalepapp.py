@@ -1,11 +1,12 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, add_comment, get_user_comments
+from helpers import get_buildings_by_name, update_rating, add_comment, get_user_comments, get_comments_keyword
 from werkzeug.security import generate_password_hash
 
 from helpers import get_buildings_by_name, update_rating, verify_login
 from decorators import login_required
 from database.models.user import User
+from datetime import datetime
 from flask_session import Session
 from tempfile import mkdtemp
 
@@ -111,11 +112,11 @@ def building_details():
     details = building_info[3]
     rating = building_info[4]
 
-    room_num = 1
+    # room_num = 1
     comments = get_user_comments(building_id)
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, comments=comments, room_num=room_num)
+        address=address, details=details, rating=rating, comments=comments)
     response = make_response(html)
     return response
 
@@ -137,10 +138,10 @@ def submit_comment():
     user_id = int(1)
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
-    date_time = request.form.get('date_time')
-    room_num = int(request.form.get('room_num'))
+    date_time = datetime.now()
+    # room_num = int(request.form.get('room_num'))
 
-    store_review = add_comment(building_id, user_id, rating, comment, date_time, room_num)
+    store_review = add_comment(building_id, user_id, rating, date_time, comment)
     response = make_response('SUCCESS')
     response.headers["review"] = store_review
     return response
@@ -152,5 +153,24 @@ def load_comments():
     comments = get_user_comments(building_id)
     comments = [c['comment'] for c in comments]
     return comments
+
+@app.route('/searchComments', methods=['GET'])
+def get_comments():
+    building_id = request.args.get('building_id')
+    keyword = request.args.get('keyword')
+    if (keyword is None) or (keyword.strip() == ''):
+        response = make_response('')
+        return response
+
+    matches = get_comments_keyword(building_id, keyword)
+
+    html = ''
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
+    for building in matches:
+        html += pattern % (building.get_name(), building.get_name())
+    
+    response = make_response(html)
+    return response
+
 
     
