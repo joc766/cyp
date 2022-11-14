@@ -1,11 +1,12 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, add_comment, get_user_comments
+from helpers import get_buildings_by_name, update_rating, add_comment, get_reviews
 from werkzeug.security import generate_password_hash
 
 from helpers import get_buildings_by_name, update_rating, verify_login
 from decorators import login_required
 from database.models.user import User
+from database.models.reviews import Review
 from datetime import datetime
 
 #we are using jinja
@@ -104,7 +105,11 @@ def building_details():
     rating = building_info[4]
 
     # room_num = 1
-    comments = get_user_comments(building_id)
+    reviews = get_reviews(building_id)
+    
+    comments = []
+    for review in reviews:
+        comments.append(review[0])
 
     html = render_template('building.html', building_id=building_id, name=name, 
         address=address, details=details, rating=rating, comments=comments)
@@ -132,16 +137,22 @@ def submit_comment():
     date_time = datetime.now()
     # room_num = int(request.form.get('room_num'))
 
-    store_review = add_comment(building_id, user_id, rating, date_time, comment)
+    new_review = Review(building_id, user_id, rating, date_time, comment, 0, 0)
+    new_review.insert_into_db()
+    # store_review = add_comment(building_id, user_id, rating, date_time, comment)
     response = make_response('SUCCESS')
-    response.headers["review"] = store_review
+    response.headers["review"] = new_review.comment
     return response
     
 @app.route('/loadComments', methods=['GET'])
 def load_comments():
+    reviews = []
     building_id = request.args.get('building_id')
 
-    comments = get_user_comments(building_id)
+    reviews = get_reviews(building_id)
+    comments = []
+    for review in reviews:
+        comments.append(review[0])
     comments = [c['comment'] for c in comments]
     return comments
 

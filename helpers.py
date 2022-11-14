@@ -76,8 +76,8 @@ def add_comment(building_id, user_id, rating, date_time, comment):
     result = query(stmt, [building_id, user_id, rating, date_time, comment])
     return result
 
-def get_user_comments(building_id):
-    stmt = "SELECT comment FROM reviews WHERE building_id = ?"
+def get_reviews(building_id):
+    stmt = "SELECT comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
     result = query(stmt, [building_id])
     return result
 
