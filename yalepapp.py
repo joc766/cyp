@@ -150,8 +150,7 @@ def submit_comment():
 def load_comments():
     building_id = request.args.get('building_id')
 
-    comments = get_user_comments(building_id)
-    comments = [c['comment'] for c in comments]
+    comments = [x.to_tuple() for x in get_user_comments(building_id)]
     return comments
 
 @app.route('/searchComments', methods=['GET'])

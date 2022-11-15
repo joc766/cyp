@@ -106,7 +106,7 @@
             function renderComments(data, res, xhr) {
                 html = ""
                 for (let i = 0; i < data.length; i++) {
-                    html += "<p>" + data[i] + "</p>"
+                    html += "<p>" + "<strong>" + data[i][2]+ ": " + "</strong>" + data[i][3] + "</p>"
                 }
                 $("#comments").html(html)
             }
@@ -146,7 +146,6 @@
                 console.log('setup')
                 loadComments()
                 $('#commentButton').on('click', addComment)
-                $('#commentInput').on('input', getComments);
             }
             $('document').ready(setup);
         </script>

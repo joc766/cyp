@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from database.models.building import Building
+from database.models.comment import Comment
 
 
 DB_FILE = "file:./database/buildings.sqlite?mode=rw"
@@ -77,9 +78,9 @@ def add_comment(building_id, user_id, rating, date_time, comment):
     return result
 
 def get_user_comments(building_id):
-    stmt = "SELECT comment FROM reviews WHERE building_id = ?"
+    stmt = "SELECT id, user_id, comment, date_time FROM reviews WHERE building_id = ?"
     result = query(stmt, [building_id])
-    return result
+    return [Comment(building_id, x["user_id"], x["comment"], x["date_time"]) for x in result]
 
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
