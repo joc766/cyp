@@ -7,8 +7,9 @@
 
         <!-- Optional theme -->
         <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="../static/styles.css">
 
-        <link rel="stylesheet" href="../static/bootstrap.min.css"
+        <link rel="stylesheet" href="../static/bootstrap.min.css">
     </head>
     <body>
         <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
@@ -22,11 +23,11 @@
                     <h5>Address</h5><strong>{{address}}</strong>
                     <h5>Current Rating</h5><strong id="rating">{{rating}}</strong>
                     <h6>Rate this Building</h6>
-                    <button class="btn btn-outline-primary" onclick="changeRating(1)">1</button>
-                    <button class="btn btn-outline-primary" onclick="changeRating(2)">2</button>
-                    <button class="btn btn-outline-primary" onclick="changeRating(3)">3</button>
-                    <button class="btn btn-outline-primary" onclick="changeRating(4)">4</button>
-                    <button class="btn btn-outline-primary" onclick="changeRating(5)">5</button>
+                    <button class="rateButton btn btn-outline-primary" value="1">1</button>
+                    <button class="rateButton btn btn-outline-primary" value="2">2</button>
+                    <button class="rateButton btn btn-outline-primary" value="3">3</button>
+                    <button class="rateButton btn btn-outline-primary" value="4">4</button>
+                    <button class="rateButton btn btn-outline-primary" value="5">5</button>
 
                     <form action="\submitComment" method="POST">
                         <hr>
@@ -62,7 +63,8 @@
                 $('#rating').html(new_rating)
             }
 
-            function changeRating(num){
+            function changeRating(e){
+                let num = Number($(e.target).attr('value'))
                 url = '/submitRating';
                 $.ajax({
                     type: 'POST', 
@@ -106,7 +108,7 @@
             function renderComments(data, res, xhr) {
                 html = ""
                 for (let i = 0; i < data.length; i++) {
-                    html += "<p>" + data[i] + "</p>"
+                    html += "<p>" + "<strong>" + data[i][2]+ ": " + "</strong>" + data[i][3] + "</p>"
                 }
                 $("#comments").html(html)
             }
@@ -141,12 +143,18 @@
                     success: loadComments
                 })
             }
+
+            function selectButton(e) {
+                $('.rateButton, .active').removeClass('active')
+                $(e.target).addClass('active')
+            }
             
             function setup(response){
                 console.log('setup')
                 loadComments()
                 $('#commentButton').on('click', addComment)
-                $('#commentInput').on('input', getComments);
+                $('.rateButton').on('click', changeRating)
+                $('.rateButton').on('click', selectButton)
             }
             $('document').ready(setup);
         </script>
