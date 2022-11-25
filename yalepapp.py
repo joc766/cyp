@@ -1,7 +1,8 @@
-from flask import Flask, request, make_response, redirect, url_for, render_template, session
+from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
 from flask import render_template
 from helpers import get_buildings_by_name, update_rating, add_comment, get_user_comments, get_comments_keyword
 from werkzeug.security import generate_password_hash
+from werkzeug.exceptions import HTTPException, NotFound
 
 from helpers import get_buildings_by_name, update_rating, verify_login
 from decorators import login_required
@@ -46,13 +47,22 @@ def login():
             user_id = verify_login(username, password)
         except KeyError as e:
             # username invalid
-            raise(e)
+            data = {
+                'status': 'FAILURE',
+                'message': 'Invalid username'
+            }
+            return make_response(jsonify(data), 200)
         except ValueError as e:
             # password invalid 
-            raise(e)
+            data = {
+                'status': 'FAILURE',
+                'message': 'Invalid password'
+            }
+            return make_response(jsonify(data), 200)
         
         session['user_id'] = user_id
-        return redirect('/')
+        data = {'status': 'SUCCESS'}
+        return make_response(jsonify(data), 200)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -78,6 +88,11 @@ def register():
             raise(e)
     
     return redirect('/login')
+
+@app.route('/error', methods=['GET'])
+def error():
+    error_msg = request.args.get('error_msg')
+    return render_template('error.html', error_msg=error_msg)
 
 
 @app.route('/search', methods=['GET'])
