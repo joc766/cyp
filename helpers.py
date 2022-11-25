@@ -59,9 +59,9 @@ def get_buildings_by_name(name):
     return buildings
 
 
-def update_rating(building_name, n_stars):
-    stmt1 = "SELECT total_rating, n_ratings, id FROM buildings WHERE descrip = ?"
-    result = query(stmt1, [building_name])[0]
+def update_rating(building_id, n_stars):
+    stmt1 = "SELECT total_rating, n_ratings, id FROM buildings WHERE id = ?"
+    result = query(stmt1, [building_id])[0]
     total_rating = float(result[0])
     n_ratings = int(result[1])
 
@@ -71,16 +71,17 @@ def update_rating(building_name, n_stars):
     return new_rating
 
 
-def add_comment(building_id, user_id, rating, date_time, comment):
+def add_review(building_id, user_id, rating, date_time, comment):
     '''update user with submitted comment'''
     stmt = "INSERT INTO reviews (building_id, user_id, rating, date_time, comment, up_votes, down_votes) VALUES (?, ?, ?, ?, ?, 0, 0)"
     result = query(stmt, [building_id, user_id, rating, date_time, comment])
-    return result
+    new_rating = update_rating(building_id, rating)
+    return {"review": result, "new_rating": new_rating}
 
 def get_user_comments(building_id):
-    stmt = "SELECT id, user_id, comment, date_time FROM reviews WHERE building_id = ?"
+    stmt = "SELECT id, rating, user_id, comment, date_time FROM reviews WHERE building_id = ?"
     result = query(stmt, [building_id])
-    return [Comment(building_id, x["user_id"], x["comment"], x["date_time"]) for x in result]
+    return [Comment(building_id, x["user_id"], x["comment"], x["date_time"], x["rating"]) for x in result]
 
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"

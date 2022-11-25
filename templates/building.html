@@ -36,12 +36,12 @@
                             <button class="rateButton btn btn-outline-primary" value="4">4</button>
                             <button class="rateButton btn btn-outline-primary" value="5">5</button>
                         </div>
-                        <form class="col-12" action="\submitComment" method="POST">
+                        <form class="col-12" method="POST">
                             <label for="commentText"><h6>Leave a comment!</h6></label>
                             <br>
                             <textarea class="form-control" id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
                             <br>
-                            <button class="btn btn-outline-primary" id="commentButton" type="button">Post</button>
+                            <button class="btn btn-outline-primary" id="reviewButton" type="button">Post</button>
                         </form>
                     </div>
                 </div>
@@ -69,11 +69,19 @@
         </script>
 
         <script>   
-            function handleRateSuccess(res, status, xhr) {
-                new_rating = xhr.getResponseHeader("new_rating")
+
+            let rating = undefined;
+
+            function handleReview(data, msg, xhr) {
+                handleRateSuccess(data.new_rating);
+                loadComments();
+            }
+
+            function handleRateSuccess(new_rating) {
                 $('#rating').html(new_rating)
             }
 
+            /*
             function changeRating(e){
                 let num = Number($(e.target).attr('value'))
                 url = '/submitRating';
@@ -87,39 +95,14 @@
                     success: handleRateSuccess
                 })
             }
-
-            function handleResponse(response)
-            {
-                let inner = ''
-                if (response !== '') inner = "<hr>" + response;
-                $('#comments').html(inner);
-            }
+            */
 
             let request = null;
-
-            function getComments()
-            {
-                let keyword = $('#commentInput').val();
-                keyword = encodeURIComponent(keyword);
-                let url = '/searchComments?keyword=' + keyword
-
-                if (request != null)
-                request.abort();
-
-                request = $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    building_id: "{{ building_id }}",
-                },
-                success: handleResponse
-                });
-            }
 
             function renderComments(data, res, xhr) {
                 html = ""
                 for (let i = 0; i < data.length; i++) {
-                    html += "<p>" + "<strong>" + data[i][2]+ ": " + "</strong>" + data[i][3] + "</p>"
+                    html += "<p>" + "<strong>" + data[i][2]+ ": " + "</strong>" + data[i][3] + " rating: " + data[i][5] + "</p>"
                 }
                 $("#comments").html(html)
             }
@@ -137,27 +120,31 @@
                 })
             }
 
-            function addComment(){
-                url = '/submitComment';
+            function addReview(){
+                console.log("HERE")
+                url = '/submitReview';
                 let date_time = new Date();
                 date_time = date_time.toLocaleString();
+                console.log(rating)
                 $.ajax({
                     type: 'POST', 
                     url: url,
                     data: {
                         commentText: $('#commentTextInput').val(),
                         building_id: "{{ building_id }}",
-                        rating: "{{ rating }}",
+                        rating: rating,
                         date_time: date_time,
                         room_num: "{{ room_num }}",
                     },
-                    success: loadComments
+                    success: handleReview
                 })
             }
 
             function selectButton(e) {
+                console.log('select')
                 $('.rateButton, .active').removeClass('active')
                 $(e.target).addClass('active')
+                rating = $(e.target).val()
             }
 
             var toggled = false;
@@ -176,11 +163,10 @@
             function setup(response){
                 console.log('setup')
                 loadComments()
-                $('#commentButton').on('click', addComment)
-                $('.rateButton').on('click', changeRating)
                 $('.rateButton').on('click', selectButton)
                 $('#reviewToggle').html('Click here to leave a review!')
                 $('#reviewToggle').on('click', handleToggle)
+                $('#reviewButton').on('click', addReview)
             }
             $('document').ready(setup);
         </script>
