@@ -7,40 +7,49 @@
 
         <!-- Optional theme -->
         <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <link rel="stylesheet" href="../static/styles.css">
 
-        <link rel="stylesheet" href="../static/bootstrap.min.css">
+        <!-- <link rel="stylesheet" href="../static/bootstrap.min.css"> -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </head>
     <body>
         <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
             <div class="container-fluid">
                 <h1>Building Details</h1>
                 <br>
-
                 </div class="row">
-
                     <h5>Name</h5><strong>{{name}}</strong>
                     <h5>Address</h5><strong>{{address}}</strong>
                     <h5>Current Rating</h5><strong id="rating">{{rating}}</strong>
-                    <h6>Rate this Building</h6>
-                    <button class="rateButton btn btn-outline-primary" value="1">1</button>
-                    <button class="rateButton btn btn-outline-primary" value="2">2</button>
-                    <button class="rateButton btn btn-outline-primary" value="3">3</button>
-                    <button class="rateButton btn btn-outline-primary" value="4">4</button>
-                    <button class="rateButton btn btn-outline-primary" value="5">5</button>
-
-                    <form action="\submitComment" method="POST">
-                        <hr>
-                        <label for="commentText">Leave a comment!</label>
-                        <br>
-                        <textarea class="form-control" id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
-                        <br>
-                        <button class="btn btn-outline-primary" id="commentButton" type="button">Post</button>
-                    </form>
-                    <br>
-                    <h4>Comments</h4>
+                </div>
+                <hr>
+                <a id="reviewToggle" class="btn btn-outline-primary mx-2" data-bs-toggle="collapse" href="#reviewSection" role="button" aria-expanded="false" aria-controls="collapseExample"></a>
+                <div class="collapse" id="reviewSection">
+                    <div class="row mx-0 mb-2">
+                        <h2 class="text-center">Leave a Review!</h2>
+                        <div class="col-12 mb-2">
+                            <h6>Rate this Building</h6>
+                            <button class="rateButton btn btn-outline-primary" value="1">1</button>
+                            <button class="rateButton btn btn-outline-primary" value="2">2</button>
+                            <button class="rateButton btn btn-outline-primary" value="3">3</button>
+                            <button class="rateButton btn btn-outline-primary" value="4">4</button>
+                            <button class="rateButton btn btn-outline-primary" value="5">5</button>
+                        </div>
+                        <form class="col-12" method="POST">
+                            <label for="commentText"><h6>Leave a comment!</h6></label>
+                            <br>
+                            <textarea class="form-control" id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
+                            <br>
+                            <button class="btn btn-outline-primary" id="reviewButton" type="button">Post</button>
+                        </form>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mx-0">
+                    <!-- <h4>Comments</h4>
                     Search building comments:
-                    <input type="text" id="commentInput" autoFocus>
+                    <input type="text" id="commentInput" autoFocus> -->
                     <div id="comments"></div>
 
                 </div>
@@ -58,11 +67,19 @@
         </script>
 
         <script>   
-            function handleRateSuccess(res, status, xhr) {
-                new_rating = xhr.getResponseHeader("new_rating")
+
+            let rating = undefined;
+
+            function handleReview(data, msg, xhr) {
+                handleRateSuccess(data.new_rating);
+                loadComments();
+            }
+
+            function handleRateSuccess(new_rating) {
                 $('#rating').html(new_rating)
             }
 
+            /*
             function changeRating(e){
                 let num = Number($(e.target).attr('value'))
                 url = '/submitRating';
@@ -76,39 +93,15 @@
                     success: handleRateSuccess
                 })
             }
-
-            function handleResponse(response)
-            {
-                let inner = ''
-                if (response !== '') inner = "<hr>" + response;
-                $('#comments').html(inner);
-            }
+            */
 
             let request = null;
 
-            function getComments()
-            {
-                let keyword = $('#commentInput').val();
-                keyword = encodeURIComponent(keyword);
-                let url = '/searchComments?keyword=' + keyword
-
-                if (request != null)
-                request.abort();
-
-                request = $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    building_id: "{{ building_id }}",
-                },
-                success: handleResponse
-                });
-            }
-
             function renderComments(data, res, xhr) {
-                html = ""
+                let html = ""
+                let stars = '★'.repeat()
                 for (let i = 0; i < data.length; i++) {
-                    html += "<p>" + "<strong>" + data[i][2]+ ": " + "</strong>" + data[i][3] + "</p>"
+                    html += "<p>" + "<strong>" + data[i][2]+ ": "+ '★'.repeat(data[i][5]) + " </strong>" + '<br>' + data[i][3] + "</p>"
                 }
                 $("#comments").html(html)
             }
@@ -126,35 +119,53 @@
                 })
             }
 
-            function addComment(){
-                url = '/submitComment';
+            function addReview(){
+                console.log("HERE")
+                url = '/submitReview';
                 let date_time = new Date();
                 date_time = date_time.toLocaleString();
+                console.log(rating)
                 $.ajax({
                     type: 'POST', 
                     url: url,
                     data: {
                         commentText: $('#commentTextInput').val(),
                         building_id: "{{ building_id }}",
-                        rating: "{{ rating }}",
+                        rating: rating,
                         date_time: date_time,
                         room_num: "{{ room_num }}",
                     },
-                    success: loadComments
+                    success: handleReview
                 })
             }
 
             function selectButton(e) {
+                console.log('select')
                 $('.rateButton, .active').removeClass('active')
                 $(e.target).addClass('active')
+                rating = $(e.target).val()
+            }
+
+            var toggled = false;
+
+            function handleToggle(e) {
+                if (!toggled) {
+                    $('#reviewToggle').html('Close')
+                    toggled = true;
+                }
+                else {
+                    $('#reviewToggle').html('Click here to leave a review!')
+                    toggled = false;
+                }
             }
             
             function setup(response){
                 console.log('setup')
                 loadComments()
-                $('#commentButton').on('click', addComment)
-                $('.rateButton').on('click', changeRating)
                 $('.rateButton').on('click', selectButton)
+                $('#reviewToggle').html('Click here to leave a review!')
+                $('#reviewToggle').on('click', handleToggle)
+                $('#reviewButton').on('click', addReview)
             }
             $('document').ready(setup);
         </script>
