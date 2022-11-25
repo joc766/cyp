@@ -16,12 +16,12 @@ def query(stmt, values):
 
 class Comment:
 
-    def __init__(self, building_id, user_id, comment, date_time, upvotes=None, downvotes=None, tags=None, room_number=None, id=None):
+    def __init__(self, building_id, user_id, comment, date_time, up_votes=None, down_votes=None, tags=None, room_number=None, id=None):
         self.id = id
         self.building_id=building_id
         self.user_id = user_id
-        self.upvotes = upvotes
-        self.downvotes = downvotes
+        self.up_votes = up_votes
+        self.down_votes = down_votes
         self.comment = comment
         self.date_time = date_time
         self.tags = tags
