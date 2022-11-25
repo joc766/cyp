@@ -47,12 +47,10 @@
                 </div>
                 <hr>
                 <div class="row mx-0">
-                    <div class="col-12">
-                        <h4>Comments</h4>
-                        Search building comments:
-                        <input type="text" id="commentInput" autoFocus>
-                        <div id="comments"></div>
-                    </div>
+                    <!-- <h4>Comments</h4>
+                    Search building comments:
+                    <input type="text" id="commentInput" autoFocus> -->
+                    <div id="comments"></div>
 
                 </div>
 
@@ -100,9 +98,10 @@
             let request = null;
 
             function renderComments(data, res, xhr) {
-                html = ""
+                let html = ""
+                let stars = '★'.repeat()
                 for (let i = 0; i < data.length; i++) {
-                    html += "<p>" + "<strong>" + data[i][2]+ ": " + "</strong>" + data[i][3] + " rating: " + data[i][5] + "</p>"
+                    html += "<p>" + "<strong>" + data[i][2]+ ": "+ '★'.repeat(data[i][5]) + " </strong>" + '<br>' + data[i][3] + "</p>"
                 }
                 $("#comments").html(html)
             }
