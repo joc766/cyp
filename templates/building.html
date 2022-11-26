@@ -82,31 +82,19 @@
                 $('#rating').html(new_rating)
             }
 
-            /*
-            function changeRating(e){
-                let num = Number($(e.target).attr('value'))
-                url = '/submitRating';
-                $.ajax({
-                    type: 'POST', 
-                    url: url,
-                    data: {
-                        n_stars: num,
-                        building: "{{ name }}"
-                    },
-                    success: handleRateSuccess
-                })
-            }
-            */
-
             let request = null;
 
             function renderComments(data, res, xhr) {
                 let html = ""
                 let stars = '★'.repeat()
                 for (let i = 0; i < data.length; i++) {
-                    html += "<p>" + "<strong>" + data[i][2]+ ": "+ '★'.repeat(data[i][5]) + " </strong>" + '<br>' + data[i][3] + "</p>"
+                    html += "<div class='col mb-2'>"
+                    html += "<p class='mb-0'>" + "<strong>" + data[i][2]+ ": "+ '★'.repeat(data[i][5]) + " </strong>" + '<br>' + data[i][3] + "</p>"
+                    html += data[i][6] + "<button reviewId='" + data[i][0] + "' value='1' class='voteBtn btn btn-success' type='button'> <img src='static/images/hand-thumbs-up.svg'/></button>" + data[i][7] + "<button reviewId='" + data[i][0] + "' value='-1' class='voteBtn btn btn-danger' type='button'><img src='static/images/hand-thumbs-down.svg'/></button>"
+                    html += "</div>"
                 }
                 $("#comments").html(html)
+                $('.voteBtn').on('click', handleCommentVote);
             }
 
             function loadComments() {
@@ -123,11 +111,10 @@
             }
 
             function addReview(){
-                console.log("HERE")
+                console.log("REVIEW")
                 url = '/submitReview';
                 let date_time = new Date();
                 date_time = date_time.toLocaleString();
-                console.log(rating)
                 $.ajax({
                     type: 'POST', 
                     url: url,
@@ -143,10 +130,9 @@
             }
 
             function selectButton(e) {
-                console.log('select')
                 $('.rateButton, .active').removeClass('active')
-                $(e.target).addClass('active')
-                rating = $(e.target).val()
+                $(e.currentTarget).addClass('active')
+                rating = $(e.currentTarget).val()
             }
 
             var toggled = false;
@@ -172,15 +158,32 @@
                 }
             }
 
+            function handleCommentVote(e) {
+                console.log("VOTE")
+                let value = $(e.currentTarget).attr('value')
+                let reviewId = $(e.currentTarget).attr('reviewId')
+                var data = {
+                    value: value,
+                    reviewId: reviewId
+                };
+                console.log(data)
+                $.ajax({
+                    type: 'POST',
+                    url: '/commentVote',
+                    data: data,
+                    success: loadComments
+                })
+            }
+
             
             function setup(response){
                 console.log('setup')
                 loadComments();
                 loadReview();
-                $('.rateButton').on('click', selectButton)
-                $('#reviewToggle').html('Click here to leave a review!')
-                $('#reviewToggle').on('click', handleToggle)
-                $('#reviewButton').on('click', addReview)
+                $('.rateButton').on('click', selectButton);
+                $('#reviewToggle').html('Click here to leave a review!');
+                $('#reviewToggle').on('click', handleToggle);
+                $('#reviewButton').on('click', addReview);
             }
             $('document').ready(setup);
         </script>

@@ -15,6 +15,7 @@ def main():
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS buildings;
+    DROP TABLE IF EXISTS commentVotes;
 
     CREATE TABLE buildings(
         id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
@@ -56,6 +57,16 @@ def main():
         FOREIGN KEY(user_id) REFERENCES users(id));\n\n"""
     
         sql_file.write(reviews_table)
+
+        commentVotes_table = """
+    CREATE TABLE commentVotes(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, review_id INTEGER NOT NULL, voter_id INTEGER NOT NULL, up_vote INTEGER NOT NULL,
+        FOREIGN KEY(review_id) REFERENCES reviews(id),
+        FOREIGN KEY(voter_id) REFERENCES users(id));\n\n"""
+
+        sql_file.write(commentVotes_table)
+
+
     
     #     rooms_table = """
     # CREATE TABLE rooms(

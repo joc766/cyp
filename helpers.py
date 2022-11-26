@@ -79,9 +79,9 @@ def add_review(building_id, user_id, rating, date_time, comment):
     return {"review": result, "new_rating": new_rating}
 
 def get_user_comments(building_id):
-    stmt = "SELECT id, rating, user_id, comment, date_time FROM reviews WHERE building_id = ?"
+    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
     result = query(stmt, [building_id])
-    return [Comment(building_id, x["user_id"], x["comment"], x["date_time"], x["rating"]) for x in result]
+    return [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
 
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
@@ -104,3 +104,15 @@ def update_comment_voting(is_upvote, review_id):
 
 def get_comments_keyword(building_id, keyword):
     pass
+
+def vote_for_review(review_id, voter_id, is_upvote):
+    if is_upvote:
+        stmt = "UPDATE reviews SET up_votes = up_votes + 1 WHERE id = ?"
+    else:
+        stmt = "UPDATE reviews SET down_votes = down_votes + 1 WHERE id = ?"
+    query(stmt, [review_id])
+    stmt2 = "INSERT INTO commentVotes (review_id, voter_id, up_vote) VALUES (?, ?, ?)"
+    query(stmt2, [review_id, voter_id, is_upvote])
+
+    return 
+
