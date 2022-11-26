@@ -129,9 +129,14 @@ def building_details():
 
     # room_num = 1
     comments = get_user_comments(building_id)
+    user_has_commented = False
+    for c in comments:
+        if c.user_id == session['user_id']:
+            user_has_commented = True
+    print(user_has_commented)
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, comments=comments)
+        address=address, details=details, rating=rating, comments=comments, user_has_commented=user_has_commented)
     response = make_response(html)
     return response
 
