@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from database.models.building import Building
-from database.models.reviews import Review
+from database.models.comment import Comment
 
 
 DB_FILE = "file:./database/buildings.sqlite?mode=rw"
@@ -59,9 +59,9 @@ def get_buildings_by_name(name):
     return buildings
 
 
-def update_rating(building_name, n_stars):
-    stmt1 = "SELECT total_rating, n_ratings, id FROM buildings WHERE descrip = ?"
-    result = query(stmt1, [building_name])[0]
+def update_rating(building_id, n_stars):
+    stmt1 = "SELECT total_rating, n_ratings, id FROM buildings WHERE id = ?"
+    result = query(stmt1, [building_id])[0]
     total_rating = float(result[0])
     n_ratings = int(result[1])
 
@@ -71,21 +71,17 @@ def update_rating(building_name, n_stars):
     return new_rating
 
 
-def add_comment(building_id, user_id, rating, date_time, comment):
+def add_review(building_id, user_id, rating, date_time, comment):
     '''update user with submitted comment'''
     stmt = "INSERT INTO reviews (building_id, user_id, rating, date_time, comment, up_votes, down_votes) VALUES (?, ?, ?, ?, ?, 0, 0)"
     result = query(stmt, [building_id, user_id, rating, date_time, comment])
-    return result
+    new_rating = update_rating(building_id, rating)
+    return {"review": result, "new_rating": new_rating}
 
-def get_reviews(building_id):
-    reviews = []
-    stmt = "SELECT comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
-    #stmt = "SELECT id, building_id, user_id, rating, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
-    results = query(stmt, [building_id])
-    for row in results:
-        review = Review(row)
-        reviews.append(review)
-    return reviews
+def get_user_comments(building_id):
+    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
+    result = query(stmt, [building_id])
+    return [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
 
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
@@ -114,3 +110,27 @@ def get_reviews_keyword(building_id, keyword):
         review = Review(row)
         reviews.append(review)
     return reviews
+
+def vote_for_review(review_id, voter_id, is_upvote):
+    if is_upvote:
+        stmt = "UPDATE reviews SET up_votes = up_votes + 1 WHERE id = ?"
+    else:
+        stmt = "UPDATE reviews SET down_votes = down_votes + 1 WHERE id = ?"
+    query(stmt, [review_id])
+    stmt2 = "INSERT INTO commentVotes (review_id, voter_id, up_vote) VALUES (?, ?, ?)"
+    query(stmt2, [review_id, voter_id, is_upvote])
+
+    return 
+
+
+def vote_for_review(review_id, voter_id, is_upvote):
+    if is_upvote:
+        stmt = "UPDATE reviews SET up_votes = up_votes + 1 WHERE id = ?"
+    else:
+        stmt = "UPDATE reviews SET down_votes = down_votes + 1 WHERE id = ?"
+    query(stmt, [review_id])
+    stmt2 = "INSERT INTO commentVotes (review_id, voter_id, up_vote) VALUES (?, ?, ?)"
+    query(stmt2, [review_id, voter_id, is_upvote])
+
+    return 
+
