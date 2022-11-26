@@ -1,6 +1,6 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, get_user_comments, get_comments_keyword, add_review
+from helpers import get_buildings_by_name, update_rating, get_user_comments, get_comments_keyword, add_review, vote_for_review
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 
@@ -162,7 +162,6 @@ def submit_comment():
     # room_num = int(request.form.get('room_num'))
 
     res = add_review(building_id, user_id, rating, date_time, comment)
-    print(res["review"])
     data = {
         "review": res["review"],
         "new_rating": res["new_rating"]
@@ -195,5 +194,15 @@ def get_comments():
     response = make_response(html)
     return response
 
+
+@app.route("/commentVote", methods=['POST'])
+def commentVote():
+    print(dict(request.form))
+    data = request.form
+    
+    vote_for_review(data["reviewId"], session["user_id"], 1 if data["value"] == "1" else 0)
+
+    return make_response("SUCCESS")
+    
 
     
