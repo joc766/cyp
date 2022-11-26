@@ -21,7 +21,7 @@
                 </div class="row">
                     <h5>Name</h5><strong>{{name}}</strong>
                     <h5>Address</h5><strong>{{address}}</strong>
-                    <h5>Current Rating</h5><strong id="rating">{{rating}}</strong>
+                    <h5>Current Rating</h5><strong id="rating">{{ rating|round }}</strong>
                 </div>
                 <hr>
                 <a id="reviewToggle" class="btn btn-outline-primary mx-2" data-bs-toggle="collapse" href="#reviewSection" role="button" aria-expanded="false" aria-controls="collapseExample"></a>
