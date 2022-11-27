@@ -122,6 +122,9 @@ def vote_for_review(review_id, voter_id, is_upvote):
 
     return 
 
+def get_comments_keyword(building_id, keyword):
+    pass
+
 
 def vote_for_review(review_id, voter_id, is_upvote):
     if is_upvote:

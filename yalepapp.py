@@ -171,7 +171,6 @@ def submit_comment():
     
 @app.route('/loadComments', methods=['GET'])
 def load_comments():
-    reviews = []
     building_id = request.args.get('building_id')
 
     comments = [x.to_tuple() for x in get_user_comments(building_id)]
@@ -204,6 +203,19 @@ def commentVote():
     vote_for_review(data["reviewId"], session["user_id"], 1 if data["value"] == "1" else 0)
 
     return make_response("SUCCESS")
+
+@app.route('/profile', methods=['GET'])
+@login_required
+def user_profile():
+    #do this but for username
+    #building_id = request.args.get('building_id')
+    # username = 'hi'
+
+    # comments = [x.to_tuple() for x in get_user_comments(username)]
+    comments = 'hi'
+    html = render_template('profile.html', user='username', college='stiles', year='2024', comments=comments)
+    response = make_response(html)
+    return response
     
 
     

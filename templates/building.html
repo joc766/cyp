@@ -19,9 +19,12 @@
                 <h1>Building Details</h1>
                 <br>
                 </div class="row">
-                    <h5>Name</h5><strong>{{name}}</strong>
-                    <h5>Address</h5><strong>{{address}}</strong>
-                    <h5>Current Rating</h5><strong id="rating">{{ rating|round }}</strong>
+                    <h5>Name</h5><strong>{{name}}</strong><br><br>
+                    <h5>Address</h5><strong>{{address}}</strong><br><br>
+                    <h5>Current Rating</h5><strong id="rating">{{ rating|round }}</strong><br><br>
+                    <h5>Description</h5><strong>get description from database</strong><br><br>
+                    <h5>Current status:</h5><strong>get open/close from database</strong><br><br>
+                    <!-- add tags: site and usage description -->
                 </div>
                 <hr>
                 <div id="reviewContainer">
@@ -90,7 +93,7 @@
                 for (let i = 0; i < data.length; i++) {
                     html += "<div class='col mb-2'>"
                     html += "<p class='mb-0'>" + "<strong>" + data[i][2]+ ": "+ '★'.repeat(data[i][5]) + " </strong>" + '<br>' + data[i][3] + "</p>"
-                    html += data[i][6] + "<button reviewId='" + data[i][0] + "' value='1' class='voteBtn btn btn-success' type='button'> <img src='static/images/hand-thumbs-up.svg'/></button>" + data[i][7] + "<button reviewId='" + data[i][0] + "' value='-1' class='voteBtn btn btn-danger' type='button'><img src='static/images/hand-thumbs-down.svg'/></button>"
+                    html += data[i][6] + "<button reviewId='" + data[i][0] + "' value='1' class='voteBtn btn btn-success' type='button'> <img src='static/images/hand-thumbs-up.svg'/></button>" + data[i][7] + "<button reviewId='" + data[i][0] + "' value='-1' class='voteBtn btn btn-danger' type='button'><img src='static/images/hand-thumbs-down.svg'/></button><br><br>"
                     html += "</div>"
                 }
                 $("#comments").html(html)
