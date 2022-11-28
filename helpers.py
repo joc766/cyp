@@ -78,14 +78,22 @@ def add_review(building_id, user_id, rating, date_time, comment):
     new_rating = update_rating(building_id, rating)
     return {"review": result, "new_rating": new_rating}
 
-def get_user_comments(building_id):
+
+# def get_user_comments(building_id):
+def get_building_reviews(building_id):
     stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
     result = query(stmt, [building_id])
     return [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
 
-def get_building_reviews(building_name):
-    stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
-    return query(stmt, [building_name])
+
+# def get_building_reviews(building_name):
+#     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
+#     return query(stmt, [building_name])
+def get_user_reviews(user_id):
+    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes, building_id FROM reviews WHERE user_id = ?"
+    result = query(stmt, [user_id])
+    return [Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
+
 
 def update_comment_voting(is_upvote, review_id):
     stmt1 = "SELECT up_votes, down_votes FROM reviews WHERE id = ?"
@@ -102,6 +110,7 @@ def update_comment_voting(is_upvote, review_id):
         query(stmt2, [down_votes, review_id])
     return [up_votes, down_votes]
 
+
 def get_reviews_keyword(building_id, keyword):
     reviews = []
     stmt = "SELECT comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ? AND comment LIKE ?"
@@ -110,6 +119,7 @@ def get_reviews_keyword(building_id, keyword):
         review = Review(row)
         reviews.append(review)
     return reviews
+
 
 def vote_for_review(review_id, voter_id, is_upvote):
     if is_upvote:
@@ -121,6 +131,7 @@ def vote_for_review(review_id, voter_id, is_upvote):
     query(stmt2, [review_id, voter_id, is_upvote])
 
     return 
+
 
 def get_comments_keyword(building_id, keyword):
     pass
