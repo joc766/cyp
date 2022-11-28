@@ -216,21 +216,15 @@ def user_profile():
     # username = 'hi'
     user = get_user(session["user_id"])
     user_info = user.to_dict()
-    c = [x.to_tuple() for x in get_user_reviews(session["user_id"])]
-    comments = ""
-    pattern = "<div class='col mb-2'>"
-    pattern += "<p class='mb-0'>" + "<strong>%s: %s </strong>" + "<br>%s</p>"
-    pattern  += "%s<button reviewId='%s' value='1' class='voteBtn btn btn-success' type='button'> <img src='static/images/hand-thumbs-up.svg'/></button>%s<button reviewId='%s' value='-1' class='voteBtn btn btn-danger' type='button'><img src='static/images/hand-thumbs-down.svg'/></button><br><br>"
-    pattern  += "</div>"
-    for comment in c:
-        stars = ""
-        for x in range(0, int(comment[5])):
-            stars += '★'
-        comments += pattern % (comment[2], stars, comment[3], str(comment[6]), str(comment[0]), str(comment[7]), str(comment[0]) )
-
-    html = render_template('profile.html', user=user_info["username"], college=user_info["college"], year=user_info["year"], comments=comments)
+    html = render_template('profile.html', user=user_info["username"], college=user_info["college"], year=user_info["year"])
     response = make_response(html)
     return response
+
+    
+@app.route('/loadUserComments', methods=['GET'])
+def load_user_comments():
+    comments = [x.to_tuple() for x in get_user_reviews(session["user_id"])]
+    return comments
     
 
     
