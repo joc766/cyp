@@ -46,7 +46,7 @@ def verify_login(username, password):
 def get_buildings_by_name(name):
     buildings = []
 
-    stmt = "SELECT id, abbr, descrip, building_prose, addr, total_rating, n_ratings FROM buildings WHERE \
+    stmt = "SELECT id, abbr, descrip, building_prose, addr, usage_descrip, site, longitude, latitude, total_rating, n_ratings FROM buildings WHERE \
             descrip LIKE :descrip;"
     values = {"descrip": '%' + name + '%'}
     
@@ -140,8 +140,8 @@ def vote_for_review(review_id, voter_id, is_upvote):
 
 def get_buildings_by_tag(tag):
     buildings = []
-    
-    stmt = "SELECT id, abbr, descrip, building_prose, addr, total_rating, n_ratings FROM buildings WHERE site = ? OR usage_descrip = ?;"
+
+    stmt = "SELECT id, abbr, descrip, building_prose, addr, usage_descrip, site, longitude, latitude, total_rating, n_ratings FROM buildings WHERE site = ? OR usage_descrip = ?;"
     
     results = query(stmt, [tag, tag])
     

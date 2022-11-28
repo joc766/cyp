@@ -215,7 +215,8 @@ def user_profile():
 
     # comments = [x.to_tuple() for x in get_user_comments(username)]
     comments = 'hi'
-    html = render_template('profile.html', user='username', college='stiles', year='2024', comments=comments)
+    user = session["user_id"]
+    html = render_template('profile.html', user=user, college='stiles', year='2024', comments=comments)
     response = make_response(html)
     return response
     
