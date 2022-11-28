@@ -1,6 +1,6 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews, get_buildings_by_tag
+from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews, get_buildings_by_tag, get_user_comments
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 
@@ -192,8 +192,12 @@ def submit_comment():
 def load_comments():
     building_id = request.args.get('building_id')
 
-    comments = [x.to_tuple() for x in get_building_reviews(building_id)]
-    return comments
+    comments = get_user_comments(building_id, session["user_id"])
+    for c in comments:
+        print(c.id)
+        print(c.curr_has_voted)
+    
+    return [c.to_tuple() for c in comments]
 
 @app.route('/searchComments', methods=['GET'])
 def get_comments():
