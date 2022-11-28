@@ -15,9 +15,11 @@ def main():
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS buildings;
+    DROP TABLE IF EXISTS commentVotes;
+    DROP TABLE IF EXISTS images;
 
     CREATE TABLE buildings(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
+        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, usage_descrip TEXT NOT NULL, site TEXT NOT NULL, longitude FLOAT, latitude FLOAT, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
 
         sql_file.write(starting_info)
 
@@ -33,6 +35,10 @@ def main():
                     f"\"{b.get('ADDR1_ALIAS')}, {b.get('ADDRESS_2')}, {b.get('ADDRESS_3')}\","
                     f"\"{b.get('DESCRIPTION')}\", "
                     f"\"{b.get('BUILDING_PROSE')}\", "
+                    f"\"{b.get('USAGE_DESCRIPTION')}\", "
+                    f"\"{b.get('SITE')}\", "
+                    f"\"{b.get('LONGITUDE')}\", "
+                    f"\"{b.get('LATITUDE')}\", "
                     f"{float(b['TOTAL_RATING'] if b.get('TOTAL_RATING') else 0.0)}, " 
                     f"{int(b['NUMBER_RATINGS'] if b.get('NUMBER_RATINGS') else 0)}"
                     ");\n")
@@ -56,6 +62,22 @@ def main():
         FOREIGN KEY(user_id) REFERENCES users(id));\n\n"""
     
         sql_file.write(reviews_table)
+
+        commentVotes_table = """
+    CREATE TABLE commentVotes(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, review_id INTEGER NOT NULL, voter_id INTEGER NOT NULL, up_vote INTEGER NOT NULL,
+        FOREIGN KEY(review_id) REFERENCES reviews(id),
+        FOREIGN KEY(voter_id) REFERENCES users(id));\n\n"""
+
+        sql_file.write(commentVotes_table)
+
+        images_table = """
+    CREATE TABLE images(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, review_id INTEGER NOT NULL, image BLOB,
+        FOREIGN KEY(review_id) REFERENCES reviews(id));\n\n
+    """
+
+        sql_file.write(images_table)
     
     #     rooms_table = """
     # CREATE TABLE rooms(

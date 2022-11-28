@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+      <title>Yale-P Website</title>
+      <link rel="stylesheet" href="../static/bootstrap.min.css">
+   </head>
+   <body>
+      <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
+         <h1>{{first}} {{last}}</h1>
+         <h5>{{user}}</h5>
+         <h5>Student in {{college}} college</h5>
+         <h5>Graduation year: {{year}}</h5>
+      </div>
+      <div>
+         <b>Your past comments:</b><br>
+         <div id="comments"></div>
+      </div>
+      <script 
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+        </script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+        </script>
+
+        <script>   
+
+            let rating = undefined;
+
+            function handleReview(data, msg, xhr) {
+                handleRateSuccess(data.new_rating);
+                $('#reviewContainer').hide()
+                loadComments();
+            }
+
+            function handleRateSuccess(new_rating) {
+                $('#rating').html(new_rating)
+            }
+
+            let request = null;
+
+            const thumbsUpButton = (reviewId, disabled) => {
+                let status = "";
+                if (disabled) {
+                    status = "disabled"
+                }
+                return "<button reviewId=" + reviewId + " value='1' class='voteBtn btn btn-success' type='button'" + status + "> <img src='static/images/hand-thumbs-up.svg'/></button>"
+            }
+
+            const thumbsDownButton = (reviewId, disabled) => {
+                let status = "";
+                if (disabled) {
+                    status = "disabled"
+                }
+                return "<button reviewId=" + reviewId + " value='-1' class='voteBtn btn btn-danger' type='button'" + status + "> <img src='static/images/hand-thumbs-down.svg'/></button>"
+            }
+
+            function renderComments(data, res, xhr) {
+                let comments = data;
+
+                let html = ""
+                let stars = '★'.repeat()
+                for (let i = 0; i < comments.length; i++) {
+                    let disabled = false;
+                    if (comments[i][8]) {
+                        disabled = true;
+                    }
+                    html += "<div class='col mb-2'>"
+                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<img>" + comments[i][9] + "</img><br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
+                    html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
+                    html += "</div><br>"
+                }
+                $("#comments").html(html)
+                $('.voteBtn').on('click', handleCommentVote);
+            }
+
+            function loadComments() {
+                url = '/loadUserComments';
+                $.ajax({
+                    type: 'GET', 
+                    url: url,
+                    success: renderComments
+                })
+            }
+
+            function handleCommentVote(e) {
+                console.log("VOTE")
+                let value = $(e.currentTarget).attr('value')
+                let reviewId = $(e.currentTarget).attr('reviewId')
+                var data = {
+                    value: value,
+                    reviewId: reviewId
+                };
+                console.log(data)
+                $.ajax({
+                    type: 'POST',
+                    url: '/commentVote',
+                    data: data,
+                    success: loadComments
+                })
+            }
+
+            
+            function setup(response){
+               console.log('setup')
+               loadComments();
+            }
+            $('document').ready(setup);
+        </script>
+
+   </body>
+ </html>
