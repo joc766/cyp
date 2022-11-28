@@ -4,6 +4,7 @@ PRAGMA foreign_keys = ON;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS buildings;
     DROP TABLE IF EXISTS commentVotes;
+    DROP TABLE IF EXISTS images;
 
     CREATE TABLE buildings(
         id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, usage_descrip TEXT NOT NULL, site TEXT NOT NULL, longitude FLOAT, latitude FLOAT, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);
@@ -40,3 +41,10 @@ INSERT INTO buildings VALUES(2450, "YORK202","202 YORK STREET, NEW HAVEN, CT, 06
         FOREIGN KEY(review_id) REFERENCES reviews(id),
         FOREIGN KEY(voter_id) REFERENCES users(id));
 
+
+    CREATE TABLE images(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, review_id INTEGER NOT NULL, image BLOB,
+        FOREIGN KEY(review_id) REFERENCES reviews(id));
+
+
+    

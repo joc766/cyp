@@ -16,6 +16,7 @@ def main():
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS buildings;
     DROP TABLE IF EXISTS commentVotes;
+    DROP TABLE IF EXISTS images;
 
     CREATE TABLE buildings(
         id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, usage_descrip TEXT NOT NULL, site TEXT NOT NULL, longitude FLOAT, latitude FLOAT, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
@@ -70,7 +71,13 @@ def main():
 
         sql_file.write(commentVotes_table)
 
+        images_table = """
+    CREATE TABLE images(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, review_id INTEGER NOT NULL, image BLOB,
+        FOREIGN KEY(review_id) REFERENCES reviews(id));\n\n
+    """
 
+        sql_file.write(images_table)
     
     #     rooms_table = """
     # CREATE TABLE rooms(
