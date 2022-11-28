@@ -94,13 +94,35 @@
 
             let request = null;
 
+            const thumbsUpButton = (reviewId, disabled) => {
+                let status = "";
+                if (disabled) {
+                    status = "disabled"
+                }
+                return "<button reviewId=" + reviewId + " value='1' class='voteBtn btn btn-success' type='button'" + status + "> <img src='static/images/hand-thumbs-up.svg'/></button>"
+            }
+
+            const thumbsDownButton = (reviewId, disabled) => {
+                let status = "";
+                if (disabled) {
+                    status = "disabled"
+                }
+                return "<button reviewId=" + reviewId + " value='-1' class='voteBtn btn btn-danger' type='button'" + status + "> <img src='static/images/hand-thumbs-down.svg'/></button>"
+            }
+
             function renderComments(data, res, xhr) {
+                let comments = data;
+
                 let html = ""
                 let stars = '★'.repeat()
-                for (let i = 0; i < data.length; i++) {
+                for (let i = 0; i < comments.length; i++) {
+                    let disabled = false;
+                    if (comments[i][8]) {
+                        disabled = true;
+                    }
                     html += "<div class='col mb-2'>"
-                    html += "<p class='mb-0'>" + "<strong>" + data[i][2]+ ": "+ '★'.repeat(data[i][5]) + " </strong>" + '<br>' + data[i][3] + "</p>"
-                    html += data[i][6] + "<button reviewId='" + data[i][0] + "' value='1' class='voteBtn btn btn-success' type='button'> <img src='static/images/hand-thumbs-up.svg'/></button>" + data[i][7] + "<button reviewId='" + data[i][0] + "' value='-1' class='voteBtn btn btn-danger' type='button'><img src='static/images/hand-thumbs-down.svg'/></button><br><br>"
+                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": "+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
+                    html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
                     html += "</div>"
                 }
                 $("#comments").html(html)
