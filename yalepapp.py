@@ -129,16 +129,7 @@ def building_details():
     latitude = building_info[5]
     longitude = building_info[6]
 
-    # room_num = 1
-<<<<<<< HEAD
     comments = get_building_reviews(building_id)
-=======
-<<<<<<< HEAD
-    comments = get_building_reviews(building_id)
-=======
-    comments = get_user_comments(building_id, session["user_id"])
->>>>>>> 5e47191fbfb1bace4f495750b684e7a658702a44
->>>>>>> 49de2cc09ce8b5b79657e0bd45a64b394164cee7
     user_has_commented = False
     for c in comments:
         if c.user_id == session['user_id']:
