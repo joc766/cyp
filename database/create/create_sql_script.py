@@ -18,7 +18,7 @@ def main():
     DROP TABLE IF EXISTS commentVotes;
 
     CREATE TABLE buildings(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
+        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, usage_descrip TEXT NOT NULL, site TEXT NOT NULL, longitude FLOAT, latitude FLOAT, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
 
         sql_file.write(starting_info)
 
@@ -34,6 +34,10 @@ def main():
                     f"\"{b.get('ADDR1_ALIAS')}, {b.get('ADDRESS_2')}, {b.get('ADDRESS_3')}\","
                     f"\"{b.get('DESCRIPTION')}\", "
                     f"\"{b.get('BUILDING_PROSE')}\", "
+                    f"\"{b.get('USAGE_DESCRIPTION')}\", "
+                    f"\"{b.get('SITE')}\", "
+                    f"\"{b.get('LONGITUDE')}\", "
+                    f"\"{b.get('LATITUDE')}\", "
                     f"{float(b['TOTAL_RATING'] if b.get('TOTAL_RATING') else 0.0)}, " 
                     f"{int(b['NUMBER_RATINGS'] if b.get('NUMBER_RATINGS') else 0)}"
                     ");\n")
