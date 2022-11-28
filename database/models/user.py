@@ -1,18 +1,14 @@
-from helpers import query, insert_query
+
 
 class User:
-    def __init__(self, password_hash, username, first_name, last_name, year, college, user_id=None):
-        self.id = user_id
-        self.password_hash = password_hash
-        self.username = username
-        self.first_name = first_name    
-        self.last_name = last_name
-        self.year = year
-        self.college = college
-
-    def insert_into_db(self):
-        stmt = "INSERT INTO users (username, password_hash, first_name, last_name, college, year) VALUES (:username, :hash, :first, :last, :college, :year);"
-        self.id = insert_query(stmt, self.to_dict())
+    def __init__(self, sqlRow):
+        self.id = sqlRow["id"]
+        self.password_hash = sqlRow["password_hash"]
+        self.username = sqlRow["username"]
+        self.first_name = sqlRow["first_name"]  
+        self.last_name = sqlRow["last_name"]
+        self.year = sqlRow["year"]
+        self.college = sqlRow["college"]
 
     def to_dict(self):
         d = {

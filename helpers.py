@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from database.models.building import Building
+from database.models.user import User
 from database.models.comment import Comment
 
 
@@ -85,6 +86,10 @@ def get_building_reviews(building_id):
     result = query(stmt, [building_id])
     return [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
 
+def insert_into_db(username, pwd_hash, first_name, last_name, college, year):
+    stmt = "INSERT INTO users (username, password_hash, first_name, last_name, college, year) VALUES (:username, :hash, :first, :last, :college, :year);"
+    id = insert_query(stmt, [username, pwd_hash, first_name, last_name, college, year])
+    
 
 # def get_building_reviews(building_name):
 #     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
@@ -93,6 +98,14 @@ def get_user_reviews(user_id):
     stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes, building_id FROM reviews WHERE user_id = ?"
     result = query(stmt, [user_id])
     return [Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
+
+def get_user(user_id):
+
+    stmt = "SELECT id, password_hash, username, first_name, last_name, year, college FROM users WHERE id = ?"
+    
+    results= query(stmt, [user_id])
+    user = User(results[0])
+    return user
 
 
 def update_comment_voting(is_upvote, review_id):

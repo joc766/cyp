@@ -1,10 +1,10 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, get_user_comments, get_comments_keyword, add_review, vote_for_review
+from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_user, get_user_reviews
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 
-from helpers import get_buildings_by_name, update_rating, verify_login
+from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db
 from decorators import login_required
 from database.models.user import User
 from datetime import datetime
@@ -79,10 +79,10 @@ def register():
         college = request.form.get('college')
         pwd_hash = generate_password_hash(password)
 
-        new_user = User(pwd_hash, username, first_name, last_name, year, college)
+        # new_user = User(pwd_hash, username, first_name, last_name, year, college)
 
         try:
-            new_user.insert_into_db()
+            user = insert_into_db(username, pwd_hash, first_name, last_name, college, year)
 
         except Exception as e:
             raise(e)
@@ -130,7 +130,7 @@ def building_details():
     longitude = building_info[6]
 
     # room_num = 1
-    comments = get_user_comments(building_id)
+    comments = get_building_reviews(building_id)
     user_has_commented = False
     for c in comments:
         if c.user_id == session['user_id']:
@@ -157,7 +157,7 @@ def vote():
 def submit_comment():
     building_id = int(request.form.get('building_id'))
     # user_id = session['user_id'] if session['user_id'] else int(1)
-    user_id = int(1)
+    user_id = session["user_id"]
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
     date_time = datetime.now()
@@ -175,7 +175,7 @@ def submit_comment():
 def load_comments():
     building_id = request.args.get('building_id')
 
-    comments = [x.to_tuple() for x in get_user_comments(building_id)]
+    comments = [x.to_tuple() for x in get_building_reviews(building_id)]
     return comments
 
 @app.route('/searchComments', methods=['GET'])
@@ -212,11 +212,21 @@ def user_profile():
     #do this but for username
     #building_id = request.args.get('building_id')
     # username = 'hi'
+    user = get_user(session["user_id"])
+    user_info = user.to_dict()
+    c = [x.to_tuple() for x in get_user_reviews(session["user_id"])]
+    comments = ""
+    pattern = "<div class='col mb-2'>"
+    pattern += "<p class='mb-0'>" + "<strong>%s: %s </strong>" + "<br>%s</p>"
+    pattern  += "%s<button reviewId='%s' value='1' class='voteBtn btn btn-success' type='button'> <img src='static/images/hand-thumbs-up.svg'/></button>%s<button reviewId='%s' value='-1' class='voteBtn btn btn-danger' type='button'><img src='static/images/hand-thumbs-down.svg'/></button><br><br>"
+    pattern  += "</div>"
+    for comment in c:
+        stars = ""
+        for x in range(0, int(comment[5])):
+            stars += '★'
+        comments += pattern % (comment[2], stars, comment[3], str(comment[6]), str(comment[0]), str(comment[7]), str(comment[0]) )
 
-    # comments = [x.to_tuple() for x in get_user_comments(username)]
-    comments = 'hi'
-    user = session["user_id"]
-    html = render_template('profile.html', user=user, college='stiles', year='2024', comments=comments)
+    html = render_template('profile.html', user=user_info["username"], college=user_info["college"], year=user_info["year"], comments=comments)
     response = make_response(html)
     return response
     
