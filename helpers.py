@@ -33,7 +33,7 @@ def insert_query(stmt, values):
     return row_id
 
 def verify_login(username, password):
-    stmt = "SELECT id, password_hash FROM users WHERE username = ?;"
+    stmt = "SELECT id, password_hash FROM users  WHERE username = ?;"
     result = query(stmt, [username])
     if len(result) == 0:
         raise KeyError('username not found')
@@ -72,18 +72,21 @@ def update_rating(building_id, n_stars):
     return new_rating
 
 
-def add_review(building_id, user_id, rating, date_time, comment):
+def add_review(building_id, user_id, rating, date_time, comment, image):
     '''update user with submitted comment'''
     stmt = "INSERT INTO reviews (building_id, user_id, rating, date_time, comment, up_votes, down_votes) VALUES (?, ?, ?, ?, ?, 0, 0)"
-    result = query(stmt, [building_id, user_id, rating, date_time, comment])
+    review_id = insert_query(stmt, [building_id, user_id, rating, date_time, comment])
     new_rating = update_rating(building_id, rating)
-    return {"review": result, "new_rating": new_rating}
+    stmt2 = "INSERT INTO images (image, review_id) VALUES (?, ?)"
+    insert_query(stmt2, [image, review_id])
+    return {"review": review_id, "new_rating": new_rating}
 
-def get_user_comments(building_id, curr_user):
-    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ? ORDER BY up_votes - down_votes DESC"
+
+# def get_user_comments(building_id):
+def get_building_reviews(building_id):
+    stmt = "SELECT reviews.id, reviews.rating, reviews.user_id, reviews.comment, reviews.date_time, reviews.up_votes, reviews.down_votes, images.image FROM reviews NATURAL JOIN images WHERE reviews.building_id = ?"
     result = query(stmt, [building_id])
-    comments = [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], current_user=curr_user) for x in result]
-    return comments
+    return [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], image=x["image"]) for x in result]
 
 def insert_into_db(username, pwd_hash, first_name, last_name, college, year):
     stmt = "INSERT INTO users (username, password_hash, first_name, last_name, college, year) VALUES (:username, :hash, :first, :last, :college, :year);"

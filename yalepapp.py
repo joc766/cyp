@@ -130,7 +130,15 @@ def building_details():
     longitude = building_info[6]
 
     # room_num = 1
+<<<<<<< HEAD
     comments = get_building_reviews(building_id)
+=======
+<<<<<<< HEAD
+    comments = get_building_reviews(building_id)
+=======
+    comments = get_user_comments(building_id, session["user_id"])
+>>>>>>> 5e47191fbfb1bace4f495750b684e7a658702a44
+>>>>>>> 49de2cc09ce8b5b79657e0bd45a64b394164cee7
     user_has_commented = False
     for c in comments:
         if c.user_id == session['user_id']:
@@ -161,9 +169,12 @@ def submit_comment():
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
     date_time = datetime.now()
+    image = request.form.get('img')
+    print(image)
+    
     # room_num = int(request.form.get('room_num'))
 
-    res = add_review(building_id, user_id, rating, date_time, comment)
+    res = add_review(building_id, user_id, rating, date_time, comment, image)
     data = {
         "review": res["review"],
         "new_rating": res["new_rating"]
