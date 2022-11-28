@@ -46,7 +46,7 @@ def verify_login(username, password):
 def get_buildings_by_name(name):
     buildings = []
 
-    stmt = "SELECT id, abbr, descrip, building_prose, addr, total_rating, n_ratings FROM buildings WHERE \
+    stmt = "SELECT id, abbr, descrip, building_prose, addr, usage_descrip, site, longitude, latitude, total_rating, n_ratings FROM buildings WHERE \
             descrip LIKE :descrip;"
     values = {"descrip": '%' + name + '%'}
     
@@ -84,9 +84,15 @@ def get_user_comments(building_id, curr_user):
     comments = [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], current_user=curr_user) for x in result]
     return comments
 
-def get_building_reviews(building_name):
-    stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
-    return query(stmt, [building_name])
+
+# def get_building_reviews(building_name):
+#     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
+#     return query(stmt, [building_name])
+def get_user_reviews(user_id):
+    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes, building_id FROM reviews WHERE user_id = ?"
+    result = query(stmt, [user_id])
+    return [Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
+
 
 def update_comment_voting(is_upvote, review_id):
     stmt1 = "SELECT up_votes, down_votes FROM reviews WHERE id = ?"
@@ -103,8 +109,16 @@ def update_comment_voting(is_upvote, review_id):
         query(stmt2, [down_votes, review_id])
     return [up_votes, down_votes]
 
-def get_comments_keyword(building_id, keyword):
-    pass
+
+def get_reviews_keyword(building_id, keyword):
+    reviews = []
+    stmt = "SELECT comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ? AND comment LIKE ?"
+    results = query(stmt, [building_id, '%'+keyword+'%'])
+    for row in results:
+        review = Review(row)
+        reviews.append(review)
+    return reviews
+
 
 def vote_for_review(review_id, voter_id, is_upvote):
     if is_upvote:
@@ -117,7 +131,36 @@ def vote_for_review(review_id, voter_id, is_upvote):
 
     return 
 
+
+def get_comments_keyword(building_id, keyword):
+    pass
+
+
+def vote_for_review(review_id, voter_id, is_upvote):
+    if is_upvote:
+        stmt = "UPDATE reviews SET up_votes = up_votes + 1 WHERE id = ?"
+    else:
+        stmt = "UPDATE reviews SET down_votes = down_votes + 1 WHERE id = ?"
+    query(stmt, [review_id])
+    stmt2 = "INSERT INTO commentVotes (review_id, voter_id, up_vote) VALUES (?, ?, ?)"
+    query(stmt2, [review_id, voter_id, is_upvote])
+
+    return 
+
+
+def get_buildings_by_tag(tag):
+    buildings = []
+
+    stmt = "SELECT id, abbr, descrip, building_prose, addr, usage_descrip, site, longitude, latitude, total_rating, n_ratings FROM buildings WHERE site = ? OR usage_descrip = ?;"
+    
+    results = query(stmt, [tag, tag])
+    
+    for row in results:
+        building = Building(row)
+        buildings.append(building)
+
+    return buildings 
+
 def get_votes(review_ids):
     stmt = "SELECT voter_id FROM commentVotes WHERE review_id IN ?"
     return query(stmt, [review_ids])
-

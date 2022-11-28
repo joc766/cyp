@@ -11,10 +11,13 @@
       <link rel="stylesheet" href="../static/bootstrap.min.css">
    </head>
    <body>
+      <button onclick="location.href='profile'">My Profile</button>
       <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
          <h1>Building Search</h1>
          Please enter a building name:
          <input class="form-control" type="text" id="buildingInput" autoFocus>
+         Search buildings by tags:
+         <input class="form-control" type="text" id="tagInput" autoFocus>
       </div>
 
       <script 
@@ -55,9 +58,15 @@
             });
          }
 
+         function getTag()
+         {
+            let tag = $('#tagInput').val();
+         }
+
          function setup()
          {
             $('#buildingInput').on('input', getResults);
+            $('#tagInput').on('input', getTag);
          }
 
          $('document').ready(setup);

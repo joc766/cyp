@@ -126,6 +126,8 @@ def building_details():
     address = building_info[2]
     details = building_info[3]
     rating = building_info[4]
+    latitude = building_info[5]
+    longitude = building_info[6]
 
     # room_num = 1
     comments = get_user_comments(building_id, session["user_id"])
@@ -136,7 +138,7 @@ def building_details():
     print(user_has_commented)
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, comments=comments, user_has_commented=user_has_commented)
+        address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, comments=comments, user_has_commented=user_has_commented)
     response = make_response(html)
     return response
 
@@ -207,6 +209,19 @@ def commentVote():
     vote_for_review(data["reviewId"], session["user_id"], 1 if data["value"] == "1" else 0)
 
     return make_response("SUCCESS")
+
+@app.route('/profile', methods=['GET'])
+@login_required
+def user_profile():
+    #do this but for username
+    #building_id = request.args.get('building_id')
+    # username = 'hi'
+
+    # comments = [x.to_tuple() for x in get_user_comments(username)]
+    comments = 'hi'
+    html = render_template('profile.html', user='username', college='stiles', year='2024', comments=comments)
+    response = make_response(html)
+    return response
     
 
     

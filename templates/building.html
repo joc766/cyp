@@ -19,9 +19,12 @@
                 <h1>Building Details</h1>
                 <br>
                 </div class="row">
-                    <h5>Name</h5><strong>{{name}}</strong>
-                    <h5>Address</h5><strong>{{address}}</strong>
-                    <h5>Current Rating</h5><strong id="rating">{{ rating|round }}</strong>
+                    <h5>Name</h5><strong>{{name}}</strong><br><br>
+                    <h5>Address</h5><strong>{{address}}</strong><br><br>
+                    <h5>Current Rating</h5><strong id="rating">{{ rating|round }}</strong><br><br>
+                    <h5>Description</h5><strong>get description from database</strong><br><br>
+                    <h5>Current status:</h5><strong>get open/close from database</strong><br><br>
+                    <!-- add tags: site and usage description -->
                 </div>
                 <hr>
                 <div id="reviewContainer">
@@ -41,6 +44,13 @@
                             <label for="commentText"><h6>Leave a comment!</h6></label>
                             <br>
                             <textarea class="form-control" id="commentTextInput" rows="4" cols="50" type="text" name="commentText" ></textarea>
+                            <br>
+                            <label for="imageText"><h6>Add a picture!</h6></label>
+                            <br>
+                            <form action="/action_page.php">
+                                <label for="img">Select image:</label>
+                                <input type="file" id="img" name="img" accept="image/*">
+                            </form>
                             <br>
                             <button class="btn btn-outline-primary" id="reviewButton" type="button">Post</button>
                         </form>
