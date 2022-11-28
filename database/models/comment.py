@@ -16,7 +16,7 @@ def query(stmt, values):
 
 class Comment:
 
-    def __init__(self, id, building_id, user_id, comment, date_time, rating, up_votes=None, down_votes=None, tags=None, room_number=None):
+    def __init__(self, id, building_id, user_id, comment, date_time, rating, current_user=None, up_votes=None, down_votes=None, tags=None, room_number=None):
         self.id = id
         self.rating = rating
         self.building_id=building_id
@@ -27,8 +27,21 @@ class Comment:
         self.date_time = date_time
         self.tags = tags
         self.room_number = room_number
-
         self.username = self.get_username()
+        self.add_comment_votes()
+        self.curr_has_voted = False
+        if current_user is not None:
+            for v in self.votes:
+                if v[0] == current_user:
+                    self.curr_has_voted = True
+
+
+    def add_comment_votes(self):
+        stmt = "SELECT voter_id, up_vote FROM commentVotes WHERE review_id = ?"
+        result = list(query(stmt, [self.id]))
+        self.votes = result
+        return self.votes
+
 
     def get_username(self):
         stmt = "SELECT username FROM users WHERE id = ?"
@@ -36,4 +49,4 @@ class Comment:
         return result[0][0]
 
     def to_tuple(self):
-        return (self.id, self.user_id, self.username, self.comment, self.date_time, self.rating, self.up_votes, self.down_votes)
+        return (self.id, self.user_id, self.username, self.comment, self.date_time, self.rating, self.up_votes, self.down_votes, self.curr_has_voted)

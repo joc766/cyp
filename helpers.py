@@ -78,10 +78,11 @@ def add_review(building_id, user_id, rating, date_time, comment):
     new_rating = update_rating(building_id, rating)
     return {"review": result, "new_rating": new_rating}
 
-def get_user_comments(building_id):
-    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ?"
+def get_user_comments(building_id, curr_user):
+    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ? ORDER BY up_votes - down_votes DESC"
     result = query(stmt, [building_id])
-    return [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
+    comments = [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], current_user=curr_user) for x in result]
+    return comments
 
 def get_building_reviews(building_name):
     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
@@ -115,4 +116,8 @@ def vote_for_review(review_id, voter_id, is_upvote):
     query(stmt2, [review_id, voter_id, is_upvote])
 
     return 
+
+def get_votes(review_ids):
+    stmt = "SELECT voter_id FROM commentVotes WHERE review_id IN ?"
+    return query(stmt, [review_ids])
 
