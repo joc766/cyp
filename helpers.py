@@ -82,7 +82,12 @@ def add_review(building_id, user_id, rating, date_time, comment, image):
     return {"review": review_id, "new_rating": new_rating}
 
 
-# def get_user_comments(building_id):
+def get_user_comments(building_id, curr_user):
+    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ? ORDER BY up_votes - down_votes DESC"
+    result = query(stmt, [building_id])
+    comments = [Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], current_user=curr_user) for x in result]
+    return comments
+
 def get_building_reviews(building_id):
     stmt = "SELECT reviews.id, reviews.rating, reviews.user_id, reviews.comment, reviews.date_time, reviews.up_votes, reviews.down_votes, images.image FROM reviews NATURAL JOIN images WHERE reviews.building_id = ?"
     result = query(stmt, [building_id])
