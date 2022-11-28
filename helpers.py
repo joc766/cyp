@@ -137,3 +137,16 @@ def vote_for_review(review_id, voter_id, is_upvote):
 
     return 
 
+
+def get_buildings_by_tag(tag):
+    buildings = []
+    
+    stmt = "SELECT id, abbr, descrip, building_prose, addr, total_rating, n_ratings FROM buildings WHERE site = ? OR usage_descrip = ?;"
+    
+    results = query(stmt, [tag, tag])
+    
+    for row in results:
+        building = Building(row)
+        buildings.append(building)
+    
+    return buildings
