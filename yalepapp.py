@@ -1,6 +1,10 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
 from flask import render_template
+<<<<<<< HEAD
 from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review
+=======
+from helpers import get_buildings_by_name, update_rating, get_user_comments, get_comments_keyword, add_review, vote_for_review, get_votes
+>>>>>>> 5e47191fbfb1bace4f495750b684e7a658702a44
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 
@@ -130,7 +134,11 @@ def building_details():
     longitude = building_info[6]
 
     # room_num = 1
+<<<<<<< HEAD
     comments = get_building_reviews(building_id)
+=======
+    comments = get_user_comments(building_id, session["user_id"])
+>>>>>>> 5e47191fbfb1bace4f495750b684e7a658702a44
     user_has_commented = False
     for c in comments:
         if c.user_id == session['user_id']:

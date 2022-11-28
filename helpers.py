@@ -161,5 +161,9 @@ def get_buildings_by_tag(tag):
     for row in results:
         building = Building(row)
         buildings.append(building)
-    
-    return buildings
+
+    return buildings 
+
+def get_votes(review_ids):
+    stmt = "SELECT voter_id FROM commentVotes WHERE review_id IN ?"
+    return query(stmt, [review_ids])
