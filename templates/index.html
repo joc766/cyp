@@ -61,6 +61,16 @@
          function getTag()
          {
             let tag = $('#tagInput').val();
+            tag = encodeURIComponent(tag);
+            let url = '/tagsearch?tag=' + tag
+            if (request != null)
+               request.abort();
+
+            request = $.ajax({
+               type: 'GET',
+               url: url,
+               success: handleResponse
+            });
          }
 
          function setup()

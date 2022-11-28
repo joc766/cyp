@@ -1,6 +1,6 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews
+from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews, get_buildings_by_tag
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 
@@ -113,6 +113,21 @@ def get_buildings():
     response = make_response(html)
     return response
 
+@app.route('/tagsearch', methods=['GET'])
+def get_tag_buildings():
+    tag = request.args.get('tag')
+    if (tag is None) or (tag.strip() == ''):
+        response = make_response()
+        return response
+    matches = get_buildings_by_tag(tag)
+    html = ''
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
+    for building in matches:
+        html += pattern % (building.get_name(), building.get_name())
+    
+    response = make_response(html)
+    return response
+
 
 @app.route('/info', methods=['GET'])
 @login_required
@@ -216,7 +231,7 @@ def user_profile():
     # username = 'hi'
     user = get_user(session["user_id"])
     user_info = user.to_dict()
-    html = render_template('profile.html', user=user_info["username"], college=user_info["college"], year=user_info["year"])
+    html = render_template('profile.html', first=user_info["first"], last=user_info["last"],user=user_info["username"], college=user_info["college"], year=user_info["year"])
     response = make_response(html)
     return response
 

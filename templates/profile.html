@@ -6,7 +6,8 @@
    </head>
    <body>
       <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
-         <h1>{{user}}</h1>
+         <h1>{{first}} {{last}}</h1>
+         <h5>{{user}}</h5>
          <h5>Student in {{college}} college</h5>
          <h5>Graduation year: {{year}}</h5>
       </div>
@@ -67,7 +68,7 @@
                     html += "<div class='col mb-2'>"
                     html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<img>" + comments[i][9] + "</img><br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
                     html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
-                    html += "</div>"
+                    html += "</div><br>"
                 }
                 $("#comments").html(html)
                 $('.voteBtn').on('click', handleCommentVote);
