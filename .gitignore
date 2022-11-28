@@ -3,3 +3,5 @@ bin
 .DS_STORE
 *.pyc 
 flask/
+*.sql
+*.sqlite
