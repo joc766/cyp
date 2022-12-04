@@ -234,7 +234,6 @@ def get_comments():
 
 @app.route("/commentVote", methods=['POST'])
 def commentVote():
-    print(dict(request.form))
     data = request.form
     
     vote_for_review(data["reviewId"], session["user_id"], 1 if data["value"] == "1" else 0)
