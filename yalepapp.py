@@ -1,10 +1,13 @@
-from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
+import os
+
+from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify, send_from_directory
 from flask import render_template
 from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews, get_buildings_by_tag, get_user_comments
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
+from werkzeug.utils import secure_filename
 
-from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db
+from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db, upload_image_to_db
 from decorators import login_required
 from database.models.user import User
 from datetime import datetime
@@ -14,10 +17,13 @@ from tempfile import mkdtemp
 #we are using jinja
 #-----------------------------------------------------------------------
 
+UPLOAD_FOLDER = mkdtemp(dir='static/user_images')
+
 app = Flask(__name__, template_folder='templates')
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_FILE_DIR"] = mkdtemp()
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 Session(app)
 
 #-----------------------------------------------------------------------
@@ -167,20 +173,34 @@ def vote():
     response.headers["new_rating"] = new_rating
     return response
 
+@app.route('/uploadImage', methods=['POST'])
+def upload_image():
+    file = request.files["img"]
+    filename = secure_filename(file.filename)
+    file_location = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    file.save(file_location)
+    id = upload_image_to_db(file_location)
+    response = make_response({"src": f"imageServe/{filename}", "img_id": id})
+    return response
+
+@app.route('/imageServe/<filename>', methods=["GET"])
+def send_image(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
 @app.route('/submitReview', methods=['POST'])
 def submit_comment():
+    print(dict(request.form))
     building_id = int(request.form.get('building_id'))
     # user_id = session['user_id'] if session['user_id'] else int(1)
     user_id = session["user_id"]
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
     date_time = datetime.now()
-    image = request.form.get('img')
-    print(image)
+    img_id = request.form.get("img_id")
     
     # room_num = int(request.form.get('room_num'))
 
-    res = add_review(building_id, user_id, rating, date_time, comment, image)
+    res = add_review(building_id, user_id, rating, date_time, comment, img_id)
     data = {
         "review": res["review"],
         "new_rating": res["new_rating"]

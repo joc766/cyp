@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from database.models.building import Building
 from database.models.user import User
 from database.models.comment import Comment
+from database.models.reviews import Review
 
 
 DB_FILE = "file:./database/buildings.sqlite?mode=rw"
@@ -74,11 +75,9 @@ def update_rating(building_id, n_stars):
 
 def add_review(building_id, user_id, rating, date_time, comment, image):
     '''update user with submitted comment'''
-    stmt = "INSERT INTO reviews (building_id, user_id, rating, date_time, comment, up_votes, down_votes) VALUES (?, ?, ?, ?, ?, 0, 0)"
-    review_id = insert_query(stmt, [building_id, user_id, rating, date_time, comment])
+    stmt = "INSERT INTO reviews (building_id, user_id, rating, date_time, comment, up_votes, down_votes, image_id) VALUES (?, ?, ?, ?, ?, 0, 0, ?)"
+    review_id = insert_query(stmt, [building_id, user_id, rating, date_time, comment, image])
     new_rating = update_rating(building_id, rating)
-    stmt2 = "INSERT INTO images (image, review_id) VALUES (?, ?)"
-    insert_query(stmt2, [image, review_id])
     return {"review": review_id, "new_rating": new_rating}
 
 
@@ -185,3 +184,11 @@ def get_buildings_by_tag(tag):
 def get_votes(review_ids):
     stmt = "SELECT voter_id FROM commentVotes WHERE review_id IN ?"
     return query(stmt, [review_ids])
+
+
+def upload_image_to_db(file_location):
+    with open(file_location, "rb") as img:
+        binary_data = img.read() 
+
+    stmt = "INSERT INTO images (review_id, image) VALUES (0, ?);"
+    return insert_query(stmt, [binary_data])

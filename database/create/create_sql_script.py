@@ -57,9 +57,10 @@ def main():
         reviews_table = """
     CREATE TABLE reviews(
         id INTEGER PRIMARY KEY AUTOINCREMENT, building_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL,
-        comment TEXT NOT NULL, date_time DATETIME, up_votes INTEGER NOT NULL, down_votes INTEGER NOT NULL,
+        comment TEXT NOT NULL, date_time DATETIME, up_votes INTEGER NOT NULL, down_votes INTEGER NOT NULL, image_id INTEGER,
         FOREIGN KEY(building_id) REFERENCES buildings(id),
-        FOREIGN KEY(user_id) REFERENCES users(id));\n\n"""
+        FOREIGN KEY(user_id) REFERENCES users(id)
+        FOREIGN KEY(image_id) REFERENCES images(id));\n\n"""
     
         sql_file.write(reviews_table)
 
