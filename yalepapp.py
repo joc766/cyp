@@ -27,11 +27,33 @@ Session(app)
 @login_required
 def index():
     users = get_all_users()
+    user_list = []
     for user in users:
-        print(user.to_dict())
-    html = render_template('index.html')
+        list = []
+        dict = user.to_dict()
+        list.append(dict['id'])
+        list.append(dict['username'])
+        list.append(dict['first'])
+        list.append(dict['last'])
+        list.append(dict['college'])
+        user_list.append(list)
+    print(user_list)
+    html = render_template('index.html', users=user_list)
     response = make_response(html)
     return response
+
+@app.route('/userProfiles', methods=['GET'])
+def users():
+    id = request.args.get('id')
+    if (id is None) or (id.strip() == ''):
+        response = make_response()
+        return response
+    user = get_user(id)
+    user_info = user.to_dict()
+    html = render_template('profile.html', first=user_info["first"], last=user_info["last"],user=user_info["username"], college=user_info["college"], year=user_info["year"])
+    response = make_response(html)
+    return response
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -233,9 +255,6 @@ def commentVote():
 @app.route('/profile', methods=['GET'])
 @login_required
 def user_profile():
-    #do this but for username
-    #building_id = request.args.get('building_id')
-    # username = 'hi'
     user = get_user(session["user_id"])
     user_info = user.to_dict()
     html = render_template('profile.html', first=user_info["first"], last=user_info["last"],user=user_info["username"], college=user_info["college"], year=user_info["year"])

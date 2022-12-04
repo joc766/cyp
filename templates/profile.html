@@ -2,17 +2,19 @@
  <html>
    <head>
       <title>Yale-P Website</title>
-      <link rel="stylesheet" href="../static/bootstrap.min.css">
+      <link rel="stylesheet" href="../static/profile.css">
    </head>
    <body>
+      <button onclick="location.href='index'">Home</button>
+      <button onclick="location.href='profile'">My Profile</button>
       <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
          <h1>{{first}} {{last}}</h1>
-         <h5>{{user}}</h5>
+         <h3>{{user}}</h3>
          <h5>Student in {{college}} college</h5>
          <h5>Graduation year: {{year}}</h5>
       </div>
       <div>
-         <b>Your past comments:</b><br>
+         <b>This user's past comments:</b><br>
          <div id="comments"></div>
       </div>
       <script 

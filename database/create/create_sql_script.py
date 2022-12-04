@@ -12,11 +12,11 @@ def main():
     with open(DB_LOC, mode="w") as sql_file:
         starting_info = """PRAGMA foreign_keys = ON;
 
+    DROP TABLE IF EXISTS images;
+    DROP TABLE IF EXISTS commentVotes;
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS buildings;
-    DROP TABLE IF EXISTS commentVotes;
-    DROP TABLE IF EXISTS images;
 
     CREATE TABLE buildings(
         id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, usage_descrip TEXT NOT NULL, site TEXT NOT NULL, longitude FLOAT, latitude FLOAT, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
