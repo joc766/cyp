@@ -135,7 +135,7 @@ def get_buildings():
     matches = get_buildings_by_name(building_name)
 
     html = ''
-    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>&nbsp;&nbsp;'
     for building in matches:
         html += pattern % (building.get_name(), building.get_name())
     
@@ -150,7 +150,7 @@ def get_tag_buildings():
         return response
     matches = get_buildings_by_tag(tag)
     html = ''
-    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>&nbsp;&nbsp;'
     for building in matches:
         html += pattern % (building.get_name(), building.get_name())
     
