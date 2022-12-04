@@ -85,7 +85,6 @@ def get_user_comments(building_id, curr_user):
     stmt = "SELECT r.id AS id, r.rating AS rating, r.user_id AS user_id, r.comment AS comment, r.date_time AS date_time,\
 r.up_votes AS up_votes, r.down_votes AS down_votes, img.id AS image_id, img.filename AS filename \
 FROM reviews AS r INNER JOIN images AS img ON r.image_id = img.id WHERE r.building_id = ? ORDER BY up_votes - down_votes DESC"
-    print(stmt)
     result = query(stmt, [building_id])
     comments = []
     for x in result:
