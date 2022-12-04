@@ -172,6 +172,8 @@ def building_details():
     rating = building_info[4]
     latitude = building_info[5]
     longitude = building_info[6]
+    site = building_info[7]
+    usage = building_info[8]
 
     comments = get_building_reviews(building_id)
     user_has_commented = False
@@ -180,7 +182,8 @@ def building_details():
             user_has_commented = True
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, user_has_commented=user_has_commented)
+        address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, 
+        user_has_commented=user_has_commented, site=site, usage=usage)
     response = make_response(html)
     return response
 

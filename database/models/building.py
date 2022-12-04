@@ -39,7 +39,7 @@ class Building:
 
     def to_tuple(self):
         # returns (id, name, address, details, ratings)
-        return (self._id, self._descrip, self._address, self._building_prose, self._total_rating, self._latitude, self._longitude)
+        return (self._id, self._descrip, self._address, self._building_prose, self._total_rating, self._latitude, self._longitude, self._site, self._usage)
 
     def to_xml(self):
         pass # TODO ?
