@@ -16,7 +16,7 @@ def query(stmt, values):
 
 class Comment:
 
-    def __init__(self, id, building_id, user_id, comment, date_time, rating, current_user=None, up_votes=None, down_votes=None, tags=None, image=None):
+    def __init__(self, id, building_id, user_id, comment, date_time, rating, current_user=None, up_votes=None, down_votes=None, tags=None, image_id=None, img_name=None):
         self.id = id
         self.rating = rating
         self.building_id=building_id
@@ -26,7 +26,8 @@ class Comment:
         self.comment = comment
         self.date_time = date_time
         self.tags = tags
-        self.image = image
+        self.image_id = image_id
+        self.img_name = img_name
 
         self.username = self.get_username()
         self.add_comment_votes()
@@ -50,4 +51,4 @@ class Comment:
         return result[0][0]
 
     def to_tuple(self):
-        return (self.id, self.user_id, self.username, self.comment, self.date_time, self.rating, self.up_votes, self.down_votes, self.curr_has_voted, self.image)
+        return (self.id, self.user_id, self.username, self.comment, self.date_time, self.rating, self.up_votes, self.down_votes, self.curr_has_voted, self.img_name)

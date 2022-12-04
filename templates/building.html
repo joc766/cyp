@@ -47,10 +47,13 @@
                             <br>
                             <label for="imageText"><h6>Add a picture!</h6></label>
                             <br>
-                            <form action="/action_page.php">
+                            <form id="imageUploadForm">
                                 <label for="img">Select image:</label>
                                 <input type="file" id="img" name="img" accept="image/*">
                             </form>
+                            <div class="col-3">
+                                <img class="img-fluid" id="uploadedImg" src=""/>
+                            </div>
                             <br>
                             <button class="btn btn-outline-primary" id="reviewButton" type="button">Post</button>
                         </form>
@@ -86,6 +89,7 @@
                 handleRateSuccess(data.new_rating);
                 $('#reviewContainer').hide()
                 loadComments();
+                $('#uploadedImg').attr('src', '')
             }
 
             function handleRateSuccess(new_rating) {
@@ -121,7 +125,10 @@
                         disabled = true;
                     }
                     html += "<div class='col mb-2'>"
-                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<img>" + comments[i][9] + "</img><br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
+                    html += "<div class='col-3'>"
+                    html += "<img class='img-fluid' src='" + comments[i][9] + "'/>"
+                    html += "</div>"
+                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
                     html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
                     html += "</div>"
                 }
@@ -142,21 +149,45 @@
                 })
             }
 
+            let currentImage = undefined;
+
+            function handleUpload(data) {
+                $('#uploadedImg').attr('src', data.src)
+                currentImage = data.img_id;
+            }
+
+            function uploadImage(e) {
+                var formData = new FormData()
+                formData.append('img', $('#img')[0].files[0])
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/uploadImage',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: handleUpload
+                });
+            }
+
             function addReview(){
-                console.log("REVIEW")
                 url = '/submitReview';
                 let date_time = new Date();
                 date_time = date_time.toLocaleString();
+                let fd = new FormData();
+                fd.append('commentText', $('#commentTextInput').val());
+                fd.append('building_id', '{{ building_id }}')
+                fd.append('rating', rating);
+                fd.append('room_num', "{{ room_num }}")
+                fd.append('img_id', currentImage)
+
                 $.ajax({
                     type: 'POST', 
+                    contentType: false,
+                    processData: false,
                     url: url,
-                    data: {
-                        commentText: $('#commentTextInput').val(),
-                        building_id: "{{ building_id }}",
-                        rating: rating,
-                        date_time: date_time,
-                        room_num: "{{ room_num }}",
-                    },
+                    data: fd,
                     success: handleReview
                 })
             }
@@ -216,6 +247,8 @@
                 $('#reviewToggle').html('Click here to leave a review!');
                 $('#reviewToggle').on('click', handleToggle);
                 $('#reviewButton').on('click', addReview);
+                $('#img').on('change', uploadImage);
+                $('#imageUploadForm').on('submit', uploadImage)
             }
             $('document').ready(setup);
         </script>
