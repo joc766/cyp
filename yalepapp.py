@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 from werkzeug.utils import secure_filename
 
-from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db, upload_image_to_db, get_image
+from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db, upload_image_to_db, get_image, get_all_users
 from decorators import login_required
 from database.models.user import User
 from datetime import datetime
@@ -30,9 +30,34 @@ Session(app)
 @app.route('/index', methods=['GET'])
 @login_required
 def index():
-    html = render_template('index.html')
+    users = get_all_users()
+    user_list = []
+    for user in users:
+        list = []
+        dict = user.to_dict()
+        list.append(dict['id'])
+        list.append(dict['username'])
+        list.append(dict['first'])
+        list.append(dict['last'])
+        list.append(dict['college'])
+        user_list.append(list)
+    print(user_list)
+    html = render_template('index.html', users=user_list)
     response = make_response(html)
     return response
+
+@app.route('/userProfiles', methods=['GET'])
+def users():
+    id = request.args.get('id')
+    if (id is None) or (id.strip() == ''):
+        response = make_response()
+        return response
+    user = get_user(id)
+    user_info = user.to_dict()
+    html = render_template('profile.html', first=user_info["first"], last=user_info["last"],user=user_info["username"], college=user_info["college"], year=user_info["year"])
+    response = make_response(html)
+    return response
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -240,9 +265,6 @@ def commentVote():
 @app.route('/profile', methods=['GET'])
 @login_required
 def user_profile():
-    #do this but for username
-    #building_id = request.args.get('building_id')
-    # username = 'hi'
     user = get_user(session["user_id"])
     user_info = user.to_dict()
     html = render_template('profile.html', first=user_info["first"], last=user_info["last"],user=user_info["username"], college=user_info["college"], year=user_info["year"])
