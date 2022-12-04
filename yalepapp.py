@@ -4,7 +4,7 @@ from helpers import get_buildings_by_name, update_rating, get_building_reviews, 
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 
-from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db
+from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db, get_all_users
 from decorators import login_required
 from database.models.user import User
 from datetime import datetime
@@ -26,6 +26,9 @@ Session(app)
 @app.route('/index', methods=['GET'])
 @login_required
 def index():
+    users = get_all_users()
+    for user in users:
+        print(user.to_dict())
     html = render_template('index.html')
     response = make_response(html)
     return response

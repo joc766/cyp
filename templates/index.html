@@ -18,6 +18,7 @@
          <input class="form-control" type="text" id="buildingInput" autoFocus>
          Search buildings by tags:
          <input class="form-control" type="text" id="tagInput" autoFocus>
+         Click on a user to see their profile:
       </div>
 
       <script 
@@ -75,6 +76,7 @@
 
          function setup()
          {
+            loadProfiles();
             $('#buildingInput').on('input', getResults);
             $('#tagInput').on('input', getTag);
          }

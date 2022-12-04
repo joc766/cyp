@@ -18,7 +18,10 @@ def query(stmt, values):
         conn.row_factory = sqlite3.Row
 
         with closing(conn.cursor()) as cursor:
-            cursor.execute(stmt, values)
+            if values == None:
+                cursor.execute(stmt)
+            else:
+                cursor.execute(stmt, values)
             result = cursor.fetchall()
         
     return result
@@ -105,6 +108,16 @@ def get_user_reviews(user_id):
     stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes, building_id FROM reviews WHERE user_id = ?"
     result = query(stmt, [user_id])
     return [Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
+
+
+def get_all_users():
+    stmt = "SELECT id, password_hash, username, first_name, last_name, year, college FROM users"
+    results = query(stmt, None)
+    users = []
+    for user_info in results:
+        users.append(User(user_info))
+    return users
+
 
 def get_user(user_id):
 
