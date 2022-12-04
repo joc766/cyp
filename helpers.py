@@ -1,6 +1,8 @@
 import sqlite3
 from contextlib import closing
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.datastructures import FileStorage
+import io
 
 
 from database.models.building import Building
@@ -88,7 +90,7 @@ FROM reviews AS r INNER JOIN images AS img ON r.image_id = img.id WHERE r.buildi
     result = query(stmt, [building_id])
     comments = []
     for x in result:
-        new = Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], image_id=x["image_id"], img_name=f"imageServe/{ x['filename'] } ", current_user=curr_user)
+        new = Comment(x["id"], building_id, x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], image_id=x["image_id"], img_name=f"imageServe/{ x['image_id'] } ", current_user=curr_user)
         comments.append(new)
     return comments
 
@@ -191,9 +193,15 @@ def get_votes(review_ids):
     return query(stmt, [review_ids])
 
 
-def upload_image_to_db(file_location, filename):
-    with open(file_location, "rb") as img:
-        binary_data = img.read() 
+def upload_image_to_db(file: FileStorage):
+    binary_data = file.stream.read()
 
-    stmt = "INSERT INTO images (image, filename) VALUES (?, ?);"
-    return insert_query(stmt, [binary_data, filename])
+    stmt = "INSERT INTO images (image) VALUES (?);"
+    return insert_query(stmt, [binary_data])
+
+def get_image(img_id):
+    stmt = "SELECT image FROM images WHERE id = ?;"
+    result = query(stmt, [img_id])
+    img = result[0]["image"]
+    print(type(img))
+    return io.BytesIO(img)
