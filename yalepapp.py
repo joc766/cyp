@@ -155,10 +155,9 @@ def building_details():
     for c in comments:
         if c.user_id == session['user_id']:
             user_has_commented = True
-    print(user_has_commented)
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, comments=comments, user_has_commented=user_has_commented)
+        address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, user_has_commented=user_has_commented)
     response = make_response(html)
     return response
 
@@ -179,8 +178,8 @@ def upload_image():
     filename = secure_filename(file.filename)
     file_location = os.path.join(app.config["UPLOAD_FOLDER"], filename)
     file.save(file_location)
-    id = upload_image_to_db(file_location)
-    response = make_response({"src": f"imageServe/{filename}", "img_id": id})
+    id = upload_image_to_db(file_location, filename)
+    response = make_response({"src": f"imageServe/{filename}", "img_id": id, "filename": filename})
     return response
 
 @app.route('/imageServe/<filename>', methods=["GET"])
@@ -189,9 +188,7 @@ def send_image(filename):
 
 @app.route('/submitReview', methods=['POST'])
 def submit_comment():
-    print(dict(request.form))
     building_id = int(request.form.get('building_id'))
-    # user_id = session['user_id'] if session['user_id'] else int(1)
     user_id = session["user_id"]
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
@@ -213,9 +210,6 @@ def load_comments():
     building_id = request.args.get('building_id')
 
     comments = get_user_comments(building_id, session["user_id"])
-    for c in comments:
-        print(c.id)
-        print(c.curr_has_voted)
     
     return [c.to_tuple() for c in comments]
 

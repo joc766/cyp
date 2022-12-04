@@ -51,7 +51,9 @@
                                 <label for="img">Select image:</label>
                                 <input type="file" id="img" name="img" accept="image/*">
                             </form>
-                            <img id="uploadedImg" src=""/>
+                            <div class="col-3">
+                                <img class="img-fluid" id="uploadedImg" src=""/>
+                            </div>
                             <br>
                             <button class="btn btn-outline-primary" id="reviewButton" type="button">Post</button>
                         </form>
@@ -87,6 +89,7 @@
                 handleRateSuccess(data.new_rating);
                 $('#reviewContainer').hide()
                 loadComments();
+                $('#uploadedImg').attr('src', '')
             }
 
             function handleRateSuccess(new_rating) {
@@ -122,7 +125,10 @@
                         disabled = true;
                     }
                     html += "<div class='col mb-2'>"
-                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<img>" + comments[i][9] + "</img><br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
+                    html += "<div class='col-3'>"
+                    html += "<img class='img-fluid' src='" + comments[i][9] + "'/>"
+                    html += "</div>"
+                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
                     html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
                     html += "</div>"
                 }
@@ -146,9 +152,8 @@
             let currentImage = undefined;
 
             function handleUpload(data) {
-                console.log("HERE");
-                console.log(data);
                 $('#uploadedImg').attr('src', data.src)
+                currentImage = data.img_id;
             }
 
             function uploadImage(e) {
@@ -175,8 +180,8 @@
                 fd.append('building_id', '{{ building_id }}')
                 fd.append('rating', rating);
                 fd.append('room_num', "{{ room_num }}")
-                let files = $('#img')[0].files
-                fd.append('images', files)
+                fd.append('img_id', currentImage)
+
                 $.ajax({
                     type: 'POST', 
                     contentType: false,

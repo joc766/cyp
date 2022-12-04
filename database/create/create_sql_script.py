@@ -74,8 +74,8 @@ def main():
 
         images_table = """
     CREATE TABLE images(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, review_id INTEGER NOT NULL, image BLOB,
-        FOREIGN KEY(review_id) REFERENCES reviews(id));\n\n
+        id INTEGER PRIMARY KEY AUTOINCREMENT, image BLOB, filename TEXT
+        );\n\n
     """
 
         sql_file.write(images_table)
