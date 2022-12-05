@@ -23,7 +23,7 @@ def load_all_buildings():
         buildings = build_json["ServiceResponse"]["Buildings"]
         for b in buildings:
             values = []
-            stmt = (f"INSERT INTO buildings (id, abbr, addr, descrip, building_prose, usage_descrip, site, longitude, latitude, total_rating, n_ratings ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);\n")
+            stmt = (f"INSERT INTO buildings (id, abbr, addr, descrip, building_prose, usage_descrip, site, longitude, latitude, total_rating, n_ratings, facilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);\n")
             values.append(int(b.get('BUILDING')))
             values.append(b.get('BUILDING_ABBR'))
             values.append(f"{b.get('ADDR1_ALIAS')}, {b.get('ADDRESS_2')}, {b.get('ADDRESS_3')}")
@@ -35,6 +35,7 @@ def load_all_buildings():
             values.append(b.get('LATITUDE'))
             values.append(float(b['TOTAL_RATING'] if b.get('TOTAL_RATING') else 0.0))
             values.append(int(b['NUMBER_RATINGS'] if b.get('NUMBER_RATINGS') else 0))
+            values.append(b['FACILITIES'] if b.get('FACILITIES') else None)
             query(stmt, values)
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ def main():
     DROP TABLE IF EXISTS buildings;
 
     CREATE TABLE buildings(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, usage_descrip TEXT, site TEXT NOT NULL, longitude FLOAT, latitude FLOAT, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL);\n\n"""
+        id INTEGER PRIMARY KEY AUTOINCREMENT, abbr TEXT NOT NULL, addr TEXT NOT NULL, descrip TEXT NOT NULL, building_prose TEXT NOT NULL, usage_descrip TEXT, site TEXT NOT NULL, longitude FLOAT, latitude FLOAT, total_rating INTEGER NOT NULL, n_ratings INTEGER NOT NULL, facilities TEXT);\n\n"""
 
         sql_file.write(starting_info)
 

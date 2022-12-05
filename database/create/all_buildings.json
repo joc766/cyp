@@ -481,7 +481,8 @@
                 "MSAG_ALIAS": "PROSPECT ST, 90",
                 "LATITUDE": "41.314576",
                 "ADDRESS_1": "PROSPECT STREET,  90",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Entryway A, bathroom and water fountain*Basement: Gym, vending machine*Floor 1: Dining hall hallway, bathroom"
             },
             {
                 "SITE": "CEN",
@@ -975,7 +976,8 @@
                 "MSAG_ALIAS": "YORK ST, 304",
                 "LATITUDE": "41.312639",
                 "ADDRESS_1": "YORK STREET, 304",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Floor 1: Main entryway, bathroom and water fountain*Floor 1: Library, bathroom*Gym: Gym, bathroom"
             },
             {
                 "SITE": "MED",
@@ -1510,7 +1512,8 @@
                 "LATITUDE": "41.31224",
                 "ADDRESS_1": "YORK STREET, 320",
                 "HISTORICAL_ALIAS": "HALL OF GRADUATE STUDIES; YORK ST, 320",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Main hallway, bathroom and water fountain*Basement: Back hallway, bathroom and water fountain*Floors 1-3: Main hallway, bathroom and water fountain*Floors 6-14: Stairwell, bathroom"
             },
             {
                 "ADDRESS_3": "06511",
@@ -1717,7 +1720,8 @@
                 "LATITUDE": "41.318122",
                 "ADDRESS_1": "WHITNEY AVENUE, 266",
                 "HISTORICAL_ALIAS": "NANCY LEE & PERRY R. BASS CENTER FOR...",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Back corner, bathroom and water fountain*Floor 1: Stairwell, bathroom and water fountain*Floor 1: Bass cafe, bathroom, water fountain, vending machine"
             },
             {
                 "SITE": "CEN",
@@ -1988,7 +1992,8 @@
                 "LATITUDE": "41.311803",
                 "ADDRESS_1": "GROVE STREET, 168",
                 "HISTORICAL_ALIAS": "UNIVERSITY COMMONS",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Bow wow, bathroom and water fountain*Basement: The Underground, bathroom and water fountain"
             },
             {
                 "SITE": "CEN",
@@ -2539,7 +2544,8 @@
                 "MSAG_ALIAS": "WALL ST,100",
                 "LATITUDE": "41.310617",
                 "ADDRESS_1": "WALL STREET, 100",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Main hallway, bathroom and water fountain*Floor 2: Stairwell, bathroom and water fountain"
             },
             {
                 "SITE": "MED",
@@ -2674,7 +2680,8 @@
                 "MSAG_ALIAS": "YORK ST, 302",
                 "LATITUDE": "41.312485",
                 "ADDRESS_1": "YORK STREET, 302",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Slipper tunnel, vending machine*Basement: Library, bathroom*Floor 1: Main entryway, bathroom and water fountain*Floor 1: Library, water fountain"
             },
             {
                 "SITE": "CEN",
@@ -2994,7 +3001,8 @@
                 "LATITUDE": "41.309936",
                 "ADDRESS_1": "ELM STREET, 189",
                 "HISTORICAL_ALIAS": "CALHOUN COLLEGE, JOHN",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Buttery, bathroom and water fountain*Floor 1: Main entryway, vending machine*Floor 1: Library, bathroom and water fountain"
             },
             {
                 "SITE": "CEN",
@@ -3126,7 +3134,8 @@
                 "MSAG_ALIAS": "HIGH ST,120",
                 "LATITUDE": "41.311139",
                 "ADDRESS_1": "HIGH STREET,120",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Floor 1: Gilmore Music Library, bathroom and water fountain*Floors 2-9: Main entryway, bathroom*Floors 2-9 Mezzanine: Stacks, bathroom"
             },
             {
                 "SITE": "MED",
@@ -5575,7 +5584,8 @@
                 "LATITUDE": "41.310813",
                 "ADDRESS_1": "COLLEGE STREET, 505",
                 "HISTORICAL_ALIAS": "INCL. BYERS HALL & VANDERBILT SCIENTIFIC HALL",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Floor 1: Main entryway, bathroom and water fountain*Basement: Theater, bathroom*Basement: Buttery, water fountain, vending machines*Floor 3: Library, bathrooms and water fountain*Floor 4: Good Life Center, bathroom"
             },
             {
                 "SITE": "CEN",
@@ -7053,7 +7063,8 @@
                 "MSAG_ALIAS": "HILLHOUSE AVE, 12",
                 "LATITUDE": "41.312687",
                 "ADDRESS_1": "HILLHOUSE AVENUE, 12",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Main hallway, bathroom*Floor 1: Main entryway, bathroom*Floor 4: Main entryway, bathroom"
             },
             {
                 "ADDRESS_3": "06511",
@@ -7457,7 +7468,8 @@
                 "MSAG_ALIAS": "ELM ST, 198",
                 "LATITUDE": "41.309622",
                 "ADDRESS_1": "ELM STREET, 198",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Floor 1: Women's Center, bathroom"
             },
             {
                 "ADDRESS_3": "06511",
@@ -8258,7 +8270,8 @@
                 "MSAG_ALIAS": "ELM ST, 242",
                 "LATITUDE": "41.310092",
                 "ADDRESS_1": "ELM STREET, 242",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Buttery, bathroom and vending machines*Basement: Gym, water fountain*Floor 1: Common room, bathroom"
             },
             {
                 "SITE": "CEN",
@@ -8292,7 +8305,8 @@
                 "LATITUDE": "41.313064",
                 "ADDRESS_1": "PROSPECT STREET,  51",
                 "HISTORICAL_ALIAS": "SHEFFIELD CHEM LAB; SHEFFIELD LAB OF ENG. MECH.",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Floor 1: Main entryway, vending machine*Basement, Floors 1-5: Office hallway, bathroom"
             },
             {
                 "SITE": "CEN",
@@ -8723,7 +8737,8 @@
                 "MSAG_ALIAS": "HIGH ST, 68",
                 "LATITUDE": "41.309104",
                 "ADDRESS_1": "HIGH STREET, 68",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Stairwell, bathroom and water fountain*Floor 1: Library, bathroom"
             },
             {
                 "SITE": "CEN",
@@ -9185,7 +9200,8 @@
                 "LATITUDE": "41.308569",
                 "ADDRESS_1": "HIGH STREET, 63",
                 "HISTORICAL_ALIAS": "LINSLY HALL, CHITTENDEN HALL",
-                "ADDRESS_2": "NEW HAVEN, CT"
+                "ADDRESS_2": "NEW HAVEN, CT",
+                "FACILITIES": "Basement: Main entryway, bathroom*Floors 2-3: Main hallway, bathroom"
             },
             {
                 "SITE": "CEN",

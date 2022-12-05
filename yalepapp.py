@@ -41,7 +41,6 @@ def index():
         list.append(dict['last'])
         list.append(dict['college'])
         user_list.append(list)
-    print(user_list)
     html = render_template('index.html', users=user_list)
     response = make_response(html)
     return response
@@ -174,6 +173,7 @@ def building_details():
     longitude = building_info[6]
     site = building_info[7]
     usage = building_info[8]
+    facilities = building_info[9].split("*")
 
     comments = get_building_reviews(building_id)
     user_has_commented = False
@@ -183,7 +183,7 @@ def building_details():
 
     html = render_template('building.html', building_id=building_id, name=name, 
         address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, 
-        user_has_commented=user_has_commented, site=site, usage=usage)
+        user_has_commented=user_has_commented, site=site, usage=usage, facilities=facilities)
     response = make_response(html)
     return response
 
