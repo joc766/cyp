@@ -160,14 +160,16 @@ def update_comment_voting(is_upvote, review_id):
     return [up_votes, down_votes]
 
 
-def get_reviews_keyword(building_id, keyword):
-    reviews = []
-    stmt = "SELECT comment, date_time, up_votes, down_votes FROM reviews WHERE building_id = ? AND comment LIKE ?"
-    results = query(stmt, [building_id, '%'+keyword+'%'])
-    for row in results:
-        review = Review(row)
-        reviews.append(review)
-    return reviews
+def get_reviews_keyword(building_id, keyword, curr_user):
+    stmt = "SELECT r.building_id AS building_id, r.id AS id, r.rating AS rating, r.user_id AS user_id, r.comment AS comment, r.date_time AS date_time,\
+r.up_votes AS up_votes, r.down_votes AS down_votes, img.id AS image_id, img.filename AS filename \
+FROM reviews AS r INNER JOIN images AS img ON r.image_id = img.id WHERE r.building_id = ? AND r.comment LIKE ? ORDER BY up_votes - down_votes DESC"
+    result = query(stmt, [building_id, '%' + keyword + '%'])
+    comments = []
+    for x in result:
+        new = Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], image_id=x["image_id"], img_name=f"imageServe/{ x['image_id'] } ", current_user=curr_user)
+        comments.append(new)
+    return comments
 
 
 def vote_for_review(review_id, voter_id, is_upvote):
@@ -180,10 +182,6 @@ def vote_for_review(review_id, voter_id, is_upvote):
     query(stmt2, [review_id, voter_id, is_upvote])
 
     return 
-
-
-def get_comments_keyword(building_id, keyword):
-    pass
 
 
 def vote_for_review(review_id, voter_id, is_upvote):

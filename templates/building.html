@@ -69,9 +69,9 @@
                 </div>
                 <hr>
                 <div class="row mx-0">
-                    <!-- <h4>Comments</h4>
+                    <h4>Comments</h4>
                     Search building comments:
-                    <input type="text" id="commentInput" autoFocus> -->
+                    <input type="text" id="commentInput" autoFocus>
                     <div id="comments"></div>
 
                 </div>
@@ -245,11 +245,37 @@
                 })
             }
 
+            // function handleResponse(response)
+            // {
+            //     let inner = ''
+            //     if (response !== '') inner = "<hr>" + response;
+            //     $('#comments').html(inner);
+            // }
+
+            function getComments()
+            {
+                let keyword = $('#commentInput').val();
+                keyword = encodeURIComponent(keyword);
+                let url = '/searchComments?keyword=' + keyword
+                if (request != null)
+                request.abort();
+
+                request = $.ajax({
+                type: 'GET',
+                url: url,
+                data: {
+                    building_id: "{{ building_id }}",
+                },
+                success: renderComments
+                });
+            }
+
             
             function setup(response){
                 console.log('setup')
                 loadComments();
                 loadReview();
+                $('#commentInput').on('input', getComments);
                 $('.rateButton').on('click', selectButton);
                 $('#reviewToggle').html('Click here to leave a review!');
                 $('#reviewToggle').on('click', handleToggle);

@@ -1,6 +1,6 @@
 from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify, send_file
 from flask import render_template
-from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews, get_buildings_by_tag, get_user_comments
+from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_reviews_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews, get_buildings_by_tag, get_user_comments
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 from werkzeug.utils import secure_filename
@@ -246,14 +246,10 @@ def get_comments():
         response = make_response('')
         return response
 
-    matches = get_comments_keyword(building_id, keyword)
+    comments = get_reviews_keyword(building_id, keyword, session['user_id'])
+    return [c.to_tuple() for c in comments]
 
-    html = ''
-    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
-    for building in matches:
-        html += pattern % (building.get_name(), building.get_name())
     
-    response = make_response(html)
     return response
 
 
@@ -281,6 +277,8 @@ def load_user_comments():
     comments = get_user_reviews(session["user_id"])
     
     return [c.to_tuple() for c in comments]
+
+
     
 
     
