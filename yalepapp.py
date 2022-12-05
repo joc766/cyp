@@ -1,10 +1,11 @@
-from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify
+from flask import Flask, request, make_response, redirect, url_for, render_template, session, jsonify, send_file
 from flask import render_template
 from helpers import get_buildings_by_name, update_rating, get_building_reviews, get_comments_keyword, add_review, vote_for_review, get_votes, get_user, get_user_reviews, get_buildings_by_tag, get_user_comments
 from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
+from werkzeug.utils import secure_filename
 
-from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db
+from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db, upload_image_to_db, get_image, get_all_users
 from decorators import login_required
 from database.models.user import User
 from datetime import datetime
@@ -14,10 +15,13 @@ from tempfile import mkdtemp
 #we are using jinja
 #-----------------------------------------------------------------------
 
+# UPLOAD_FOLDER = 'static/user_images'
+
 app = Flask(__name__, template_folder='templates')
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_FILE_DIR"] = mkdtemp()
+# app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 Session(app)
 
 #-----------------------------------------------------------------------
@@ -26,9 +30,34 @@ Session(app)
 @app.route('/index', methods=['GET'])
 @login_required
 def index():
-    html = render_template('index.html')
+    users = get_all_users()
+    user_list = []
+    for user in users:
+        list = []
+        dict = user.to_dict()
+        list.append(dict['id'])
+        list.append(dict['username'])
+        list.append(dict['first'])
+        list.append(dict['last'])
+        list.append(dict['college'])
+        user_list.append(list)
+    print(user_list)
+    html = render_template('index.html', users=user_list)
     response = make_response(html)
     return response
+
+@app.route('/userProfiles', methods=['GET'])
+def users():
+    id = request.args.get('id')
+    if (id is None) or (id.strip() == ''):
+        response = make_response()
+        return response
+    user = get_user(id)
+    user_info = user.to_dict()
+    html = render_template('profile.html', first=user_info["first"], last=user_info["last"],user=user_info["username"], college=user_info["college"], year=user_info["year"])
+    response = make_response(html)
+    return response
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -106,7 +135,7 @@ def get_buildings():
     matches = get_buildings_by_name(building_name)
 
     html = ''
-    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>&nbsp;&nbsp;'
     for building in matches:
         html += pattern % (building.get_name(), building.get_name())
     
@@ -121,7 +150,7 @@ def get_tag_buildings():
         return response
     matches = get_buildings_by_tag(tag)
     html = ''
-    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>'
+    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>&nbsp;&nbsp;'
     for building in matches:
         html += pattern % (building.get_name(), building.get_name())
     
@@ -143,16 +172,18 @@ def building_details():
     rating = building_info[4]
     latitude = building_info[5]
     longitude = building_info[6]
+    site = building_info[7]
+    usage = building_info[8]
 
     comments = get_building_reviews(building_id)
     user_has_commented = False
     for c in comments:
         if c.user_id == session['user_id']:
             user_has_commented = True
-    print(user_has_commented)
 
     html = render_template('building.html', building_id=building_id, name=name, 
-        address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, comments=comments, user_has_commented=user_has_commented)
+        address=address, details=details, rating=rating, latitude=latitude, longitude=longitude, 
+        user_has_commented=user_has_commented, site=site, usage=usage)
     response = make_response(html)
     return response
 
@@ -167,20 +198,31 @@ def vote():
     response.headers["new_rating"] = new_rating
     return response
 
+@app.route('/uploadImage', methods=['POST'])
+def upload_image():
+    file = request.files["img"]
+    id = upload_image_to_db(file)
+    response = make_response({"img_id": id, "src": f"imageServe/{id}"})
+    print("HERE")
+    return response
+
+@app.route('/imageServe/<img_id>', methods=["GET"])
+def send_image(img_id):
+    img = get_image(img_id)
+    return send_file(img, mimetype='image/*')
+
 @app.route('/submitReview', methods=['POST'])
 def submit_comment():
     building_id = int(request.form.get('building_id'))
-    # user_id = session['user_id'] if session['user_id'] else int(1)
     user_id = session["user_id"]
     rating = int(request.form.get('rating'))
     comment = str(request.form.get('commentText'))
     date_time = datetime.now()
-    image = request.form.get('img')
-    print(image)
+    img_id = request.form.get("img_id")
     
     # room_num = int(request.form.get('room_num'))
 
-    res = add_review(building_id, user_id, rating, date_time, comment, image)
+    res = add_review(building_id, user_id, rating, date_time, comment, img_id)
     data = {
         "review": res["review"],
         "new_rating": res["new_rating"]
@@ -193,9 +235,6 @@ def load_comments():
     building_id = request.args.get('building_id')
 
     comments = get_user_comments(building_id, session["user_id"])
-    for c in comments:
-        print(c.id)
-        print(c.curr_has_voted)
     
     return [c.to_tuple() for c in comments]
 
@@ -220,7 +259,6 @@ def get_comments():
 
 @app.route("/commentVote", methods=['POST'])
 def commentVote():
-    print(dict(request.form))
     data = request.form
     
     vote_for_review(data["reviewId"], session["user_id"], 1 if data["value"] == "1" else 0)
@@ -230,9 +268,6 @@ def commentVote():
 @app.route('/profile', methods=['GET'])
 @login_required
 def user_profile():
-    #do this but for username
-    #building_id = request.args.get('building_id')
-    # username = 'hi'
     user = get_user(session["user_id"])
     user_info = user.to_dict()
     html = render_template('profile.html', first=user_info["first"], last=user_info["last"],user=user_info["username"], college=user_info["college"], year=user_info["year"])

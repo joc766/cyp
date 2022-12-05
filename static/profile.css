@@ -1,0 +1,33 @@
+:root {
+    --main-color: #006;
+    --accent-color: #06c;
+    --background-color: #d9e3f1;
+}
+
+h1 {
+    color: var(--main-color);
+    /* background: var(--accent-color); */
+    text-align: center;
+}
+h3 {
+    color: var(--accent-color);
+    /* background: var(--accent-color); */
+    text-align: center;
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+.loginButton {
+    background-color: var(--main-color);
+}
+
+.resultRow:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+.resultRow.selected {
+    background-color: green;
+}
