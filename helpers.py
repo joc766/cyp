@@ -65,6 +65,11 @@ def get_buildings_by_name(name):
     
     return buildings
 
+def get_building_by_id(building_id):
+    stmt = "SELECT descrip FROM buildings WHERE id = ?"
+    results = query(stmt, [building_id])
+    return results[0][0]
+
 
 def update_rating(building_id, n_stars):
     stmt1 = "SELECT total_rating, n_ratings, id FROM buildings WHERE id = ?"
