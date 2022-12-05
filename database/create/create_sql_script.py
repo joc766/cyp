@@ -2,7 +2,7 @@ import json
 import os
 
 DB_LOC = "./createdb.sql"
-BLD_JSON = "../all_buildings.json"
+BLD_JSON = "./all_buildings.json"
 
 
 def main():

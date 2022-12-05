@@ -3,7 +3,7 @@ import sqlite3
 
 from contextlib import closing
 
-BUILDINGS_JSON = '../all_buildings.json'
+BUILDINGS_JSON = './all_buildings.json'
 DB_FILE = "file:../buildings.sqlite?mode=rw"
 
 def query(stmt, values):
