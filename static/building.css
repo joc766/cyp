@@ -10,10 +10,17 @@ h1 {
     text-align: center;
 }
 
+h5 {
+    text-decoration: underline;
+}
+
+strong {
+    color: var(--main-color);
+}
+
 body {
     background-color: var(--background-color);
 }
-
 
 .loginButton {
     background-color: var(--main-color);
@@ -26,4 +33,9 @@ body {
 
 .resultRow.selected {
     background-color: green;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
 }
