@@ -2,18 +2,20 @@
  <html>
    <head>
       <title>Yale-P Website</title>
-      <link rel="stylesheet" href="../static/profile.css">
+      <link rel="stylesheet" href="../static/bootstrap.min.css">
    </head>
    <body>
-      <button onclick="location.href='index'">Home</button>
-      <button onclick="location.href='profile'">My Profile</button>
-      <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
-         <h1>{{first}} {{last}}</h1>
-         <h3>{{user}}</h3>
+    <div style="padding: 10px">
+        <button onclick="location.href='index'">Home</button>
+        <button onclick="location.href='profile'">My Profile</button>
+    </div>
+      <div style="max-width: 1500px; margin: 0 auto; padding: 25px">
+         <h1 style="text-align: center">{{first}} {{last}}</h1>
+         <h3 style="text-align: center">Username: {{user}}</h3>
          <h5>Student in {{college}} college</h5>
          <h5>Graduation year: {{year}}</h5>
       </div>
-      <div>
+      <div style="padding: 10px">
          <b>This user's past comments:</b><br>
          <div id="comments"></div>
       </div>
@@ -55,7 +57,7 @@
                     html += "<img class='img-fluid' src='" + comments[i][9] + "'/>"
                     html += "</div>"
                     html += "<p class='mb-0'>" + "<strong> Building name: " + comments[i][11] + " </strong>" + '<br>' + "</p"
-                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
+                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p> <br>"
                     //html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
                     html += "</div>"
                 }

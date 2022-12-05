@@ -11,15 +11,20 @@
       <link rel="stylesheet" href="../static/bootstrap.min.css">
    </head>
    <body>
-      <button onclick="location.href='index'">Home</button>
-      <button onclick="location.href='profile'">My Profile</button>
+      <div style="padding: 10px">
+         <button onclick="location.href='index'">Home</button>
+         <button onclick="location.href='profile'">My Profile</button>
+     </div>
       <div style="max-width: 1500px; margin: 0 auto; padding: 10px">
          <h1>Building Search</h1>
-         Please enter a building name:
+         <strong>Please enter a building name:</strong>
          <input class="form-control" type="text" id="buildingInput" autoFocus>
-         Search buildings by tags:
+         <strong>Search buildings by tags:</strong>
          <input class="form-control" type="text" id="tagInput" placeholder="academic, dormitory, athletics, etc." autoFocus>
-         See what your friends are reviewing! Click to see their profile!
+         <br>
+         <div>
+            <strong>See what your friends are reviewing! Click to see their profile!</strong>
+         </div>
          {% for user in users%}
             <hr>
             <a href="userProfiles?id={{user[0]}}">{{user[1]}}</a>

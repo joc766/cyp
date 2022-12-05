@@ -206,7 +206,6 @@ def upload_image():
     file = request.files["img"]
     id = upload_image_to_db(file)
     response = make_response({"img_id": id, "src": f"imageServe/{id}"})
-    print("HERE")
     return response
 
 @app.route('/imageServe/<img_id>', methods=["GET"])
