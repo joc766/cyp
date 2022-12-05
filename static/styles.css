@@ -27,3 +27,15 @@ body {
 .resultRow.selected {
     background-color: green;
 }
+
+.searchResultButton {
+    background-color: rgba(50, 140, 231, 0.636);
+    color: white;
+    max-width: 100%;
+    padding-left:25px;
+    padding-right:25px;
+}
+
+.searchResultsGroup {
+    margin: 2px;
+}

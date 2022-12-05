@@ -133,12 +133,12 @@ def get_buildings():
 
     matches = get_buildings_by_name(building_name)
 
-    html = ''
-    pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>&nbsp;&nbsp;'
-    for building in matches:
-        html += pattern % (building.get_name(), building.get_name())
+    # html = ''
+    # pattern = '<button onclick="location.href=\'/info?name=%s\';">%s</button>&nbsp;&nbsp;'
+    # for building in matches:
+    #     html += pattern % (building.get_name(), building.get_name())
     
-    response = make_response(html)
+    response = make_response(matches)
     return response
 
 @app.route('/tagsearch', methods=['GET'])
@@ -161,8 +161,7 @@ def get_tag_buildings():
 @login_required
 def building_details():
     name = request.args.get('name')
-    building = get_buildings_by_name(name)[0]
-    building_info = building.to_tuple()
+    building_info = get_buildings_by_name(name)[0]
 
     building_id = building_info[0]
     name = building_info[1]

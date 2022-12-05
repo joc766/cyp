@@ -54,14 +54,14 @@ def get_buildings_by_name(name):
     buildings = []
 
     stmt = "SELECT id, abbr, descrip, building_prose, addr, usage_descrip, site, longitude, latitude, total_rating, n_ratings, facilities FROM buildings WHERE \
-            descrip LIKE :descrip;"
+            descrip LIKE :descrip ORDER BY n_ratings DESC;"
     values = {"descrip": '%' + name + '%'}
     
     results = query(stmt, values)
     
     for row in results:
         building = Building(row)
-        buildings.append(building)
+        buildings.append(building.to_tuple())
     
     return buildings
 
