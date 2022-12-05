@@ -59,7 +59,6 @@
 
             function renderComments(data, res, xhr) {
                 let comments = data;
-
                 let html = ""
                 let stars = '★'.repeat()
                 for (let i = 0; i < comments.length; i++) {
@@ -68,9 +67,12 @@
                         disabled = true;
                     }
                     html += "<div class='col mb-2'>"
-                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<img>" + comments[i][9] + "</img><br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
+                    html += "<div class='col-3'>"
+                    html += "<img class='img-fluid' src='" + comments[i][9] + "'/>"
+                    html += "</div>"
+                    html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
                     html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
-                    html += "</div><br>"
+                    html += "</div>"
                 }
                 $("#comments").html(html)
                 $('.voteBtn').on('click', handleCommentVote);
