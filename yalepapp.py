@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.exceptions import HTTPException, NotFound
 from werkzeug.utils import secure_filename
 
-from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db, upload_image_to_db, get_image, get_all_users
+from helpers import get_buildings_by_name, update_rating, verify_login, insert_into_db, upload_image_to_db, get_image, get_all_users, get_building_by_id
 from decorators import login_required
 from database.models.user import User
 from datetime import datetime
@@ -277,8 +277,16 @@ def user_profile():
     
 @app.route('/loadUserComments', methods=['GET'])
 def load_user_comments():
+    result = []
     comments = [x.to_tuple() for x in get_user_reviews(session["user_id"])]
-    return comments
+    for comment in comments:
+        building_name = get_building_by_id(comment[10])
+        comment_info = []
+        for data in comment:
+            comment_info.append(data)
+        comment_info.append(building_name)
+        result.append(comment_info)
+    return result
     
 
     

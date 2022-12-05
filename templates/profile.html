@@ -70,6 +70,7 @@
                     html += "<div class='col-3'>"
                     html += "<img class='img-fluid' src='" + comments[i][9] + "'/>"
                     html += "</div>"
+                    html += "<p class='mb-0'>" + "<strong> Building name: " + comments[i][11] + " </strong>" + '<br>' + "</p"
                     html += "<p class='mb-0'>" + "<strong>" + comments[i][2]+ ": " + "<br>"+ '★'.repeat(comments[i][5]) + " </strong>" + '<br>' + comments[i][3] + "</p>"
                     html += comments[i][6] + thumbsUpButton(comments[i][0], disabled) + comments[i][7] + thumbsDownButton(comments[i][0], disabled)
                     html += "</div>"

@@ -51,4 +51,4 @@ class Comment:
         return result[0][0]
 
     def to_tuple(self):
-        return (self.id, self.user_id, self.username, self.comment, self.date_time, self.rating, self.up_votes, self.down_votes, self.curr_has_voted, self.img_name)
+        return (self.id, self.user_id, self.username, self.comment, self.date_time, self.rating, self.up_votes, self.down_votes, self.curr_has_voted, self.img_name, self.building_id)
