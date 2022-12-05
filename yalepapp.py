@@ -222,6 +222,8 @@ def submit_comment():
     comment = str(request.form.get('commentText'))
     date_time = datetime.now()
     img_id = request.form.get("img_id")
+    if len(img_id) == 0:
+        img_id = None
     
     # room_num = int(request.form.get('room_num'))
 
@@ -235,11 +237,21 @@ def submit_comment():
     
 @app.route('/loadComments', methods=['GET'])
 def load_comments():
+    print('gets to load comments')
     building_id = request.args.get('building_id')
-
+    result = []
     comments = get_user_comments(building_id, session["user_id"])
-    
-    return [c.to_tuple() for c in comments]
+    for comment in comments:
+        comment_info = []
+        for i, data in enumerate(comment.to_tuple()):
+            if i == 9 and data == 'imageServe/None ':
+                comment_info.append('')
+            else:
+                comment_info.append(data)
+        print(comment_info, 'comment info')
+        result.append(comment_info)
+    return result
+
 
 @app.route('/searchComments', methods=['GET'])
 def get_comments():
