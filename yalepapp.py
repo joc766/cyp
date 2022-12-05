@@ -206,7 +206,6 @@ def upload_image():
     file = request.files["img"]
     id = upload_image_to_db(file)
     response = make_response({"img_id": id, "src": f"imageServe/{id}"})
-    print("HERE")
     return response
 
 @app.route('/imageServe/<img_id>', methods=["GET"])
@@ -237,7 +236,6 @@ def submit_comment():
     
 @app.route('/loadComments', methods=['GET'])
 def load_comments():
-    print('gets to load comments')
     building_id = request.args.get('building_id')
     result = []
     comments = get_user_comments(building_id, session["user_id"])
@@ -248,7 +246,6 @@ def load_comments():
                 comment_info.append('')
             else:
                 comment_info.append(data)
-        print(comment_info, 'comment info')
         result.append(comment_info)
     return result
 
@@ -258,7 +255,6 @@ def get_comments():
     building_id = request.args.get('building_id')
     keyword = request.args.get('keyword')
     if (keyword.strip() == ''):
-        print(keyword, 'this is not working')
         result = []
         comments = get_user_comments(building_id, session["user_id"])
         for comment in comments:
@@ -268,7 +264,6 @@ def get_comments():
                     comment_info.append('')
                 else:
                     comment_info.append(data)
-            print(comment_info, 'comment info')
             result.append(comment_info)
         return result
     result = []
@@ -280,7 +275,6 @@ def get_comments():
                 comment_info.append('')
             else:
                 comment_info.append(data)
-        print(comment_info, 'comment info')
         result.append(comment_info)
     return result
 
