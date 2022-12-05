@@ -173,7 +173,10 @@ def building_details():
     longitude = building_info[6]
     site = building_info[7]
     usage = building_info[8]
-    facilities = building_info[9].split("*")
+    if building_info[9] == None:
+        facilities = ["No data found"]
+    else:
+        facilities = building_info[9].split("*")
 
     comments = get_building_reviews(building_id)
     user_has_commented = False
