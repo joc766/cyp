@@ -257,12 +257,32 @@ def load_comments():
 def get_comments():
     building_id = request.args.get('building_id')
     keyword = request.args.get('keyword')
-    if (keyword is None) or (keyword.strip() == ''):
-        response = make_response('')
-        return response
-
+    if (keyword.strip() == ''):
+        print(keyword, 'this is not working')
+        result = []
+        comments = get_user_comments(building_id, session["user_id"])
+        for comment in comments:
+            comment_info = []
+            for i, data in enumerate(comment.to_tuple()):
+                if i == 9 and data == 'imageServe/None ':
+                    comment_info.append('')
+                else:
+                    comment_info.append(data)
+            print(comment_info, 'comment info')
+            result.append(comment_info)
+        return result
+    result = []
     comments = get_reviews_keyword(building_id, keyword, session['user_id'])
-    return [c.to_tuple() for c in comments]
+    for comment in comments:
+        comment_info = []
+        for i, data in enumerate(comment.to_tuple()):
+            if i == 9 and data == 'imageServe/None ':
+                comment_info.append('')
+            else:
+                comment_info.append(data)
+        print(comment_info, 'comment info')
+        result.append(comment_info)
+    return result
 
 
 
