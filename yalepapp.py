@@ -311,7 +311,11 @@ def load_user_comments():
         result.append(comment_info)
     return result
     
-    return [c.to_tuple() for c in comments]
+@app.route('/logout', methods=['POST', 'GET'])
+def log_out():
+    session.pop('user_id', None)
+    return redirect('/login')
+
 
 
     
