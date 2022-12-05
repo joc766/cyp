@@ -12,6 +12,7 @@ from sqlite3 import connect
 import os
 
 from create_sql_script import main as create_instructions
+import load_builds
 
 #-----------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ def main():
 
                 with open(DB_SCRIPT) as script:
                     cursor.executescript(script.read())
+        load_builds.load_all_buildings()
 
                 #-------------------------------------------------------
 

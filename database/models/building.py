@@ -12,6 +12,7 @@ class Building:
         self._latitude = sqlRow["latitude"]
         self._total_rating = sqlRow["total_rating"]
         self._n_ratings = sqlRow["n_ratings"]
+        self._facilities = sqlRow["facilities"]
 
     def get_id(self):
         return self._id
@@ -36,10 +37,13 @@ class Building:
     
     def get_rating(self):
         return self._total_rating
+    
+    def get_facilities(self):
+        return self._facilities
 
     def to_tuple(self):
         # returns (id, name, address, details, ratings)
-        return (self._id, self._descrip, self._address, self._building_prose, self._total_rating, self._latitude, self._longitude)
+        return (self._id, self._descrip, self._address, self._building_prose, self._total_rating, self._latitude, self._longitude, self._site, self._usage, self._facilities)
 
     def to_xml(self):
         pass # TODO ?

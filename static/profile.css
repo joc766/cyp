@@ -9,11 +9,15 @@ h1 {
     /* background: var(--accent-color); */
     text-align: center;
 }
+h3 {
+    color: var(--accent-color);
+    /* background: var(--accent-color); */
+    text-align: center;
+}
 
 body {
     background-color: var(--background-color);
 }
-
 
 .loginButton {
     background-color: var(--main-color);
