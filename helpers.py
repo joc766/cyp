@@ -111,9 +111,19 @@ def insert_into_db(username, pwd_hash, first_name, last_name, college, year):
 #     stmt = "SELECT reviews.comment FROM reviews JOIN buildings WHERE buildings.descrip = ?"
 #     return query(stmt, [building_name])
 def get_user_reviews(user_id):
-    stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes, building_id FROM reviews WHERE user_id = ?"
+    stmt = "SELECT r.building_id AS building_id, r.id AS id, r.rating AS rating, r.user_id AS user_id, r.comment AS comment, r.date_time AS date_time,\
+    r.up_votes AS up_votes, r.down_votes AS down_votes, img.id AS image_id, img.filename AS filename \
+    FROM reviews AS r INNER JOIN images AS img ON r.image_id = img.id WHERE r.user_id = ? ORDER BY up_votes - down_votes DESC"
     result = query(stmt, [user_id])
-    return [Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
+    comments = []
+    for x in result:
+        new = Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"], image_id=x["image_id"], img_name=f"imageServe/{ x['image_id'] } ", current_user=user_id)
+        comments.append(new)
+    return comments
+
+    # stmt = "SELECT id, rating, user_id, comment, date_time, up_votes, down_votes, building_id FROM reviews WHERE user_id = ?"
+    # result = query(stmt, [user_id])
+    # return [Comment(x["id"], x["building_id"], x["user_id"], x["comment"], x["date_time"], x["rating"], up_votes=x["up_votes"], down_votes=x["down_votes"]) for x in result]
 
 
 def get_all_users():

@@ -277,8 +277,10 @@ def user_profile():
     
 @app.route('/loadUserComments', methods=['GET'])
 def load_user_comments():
-    comments = [x.to_tuple() for x in get_user_reviews(session["user_id"])]
-    return comments
+
+    comments = get_user_reviews(session["user_id"])
+    
+    return [c.to_tuple() for c in comments]
     
 
     

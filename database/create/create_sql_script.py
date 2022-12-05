@@ -12,9 +12,9 @@ def main():
     with open(DB_LOC, mode="w") as sql_file:
         starting_info = """PRAGMA foreign_keys = ON;
 
-    DROP TABLE IF EXISTS images;
     DROP TABLE IF EXISTS commentVotes;
     DROP TABLE IF EXISTS reviews;
+    DROP TABLE IF EXISTS images;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS buildings;
 
