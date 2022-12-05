@@ -249,8 +249,7 @@ def get_comments():
     comments = get_reviews_keyword(building_id, keyword, session['user_id'])
     return [c.to_tuple() for c in comments]
 
-    
-    return response
+
 
 
 @app.route("/commentVote", methods=['POST'])

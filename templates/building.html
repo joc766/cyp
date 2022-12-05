@@ -71,7 +71,7 @@
                 <div class="row mx-0">
                     <h4>Comments</h4><br>
                     Search building comments for keyword:
-                    <input type="text" id="commentInput" autoFocus><br>
+                    <input type="text" class="comment" id="commentInput"><br>
                     <div id="comments"></div>
 
                 </div>
@@ -254,20 +254,27 @@
 
             function getComments()
             {
-                let keyword = $('#commentInput').val();
-                keyword = encodeURIComponent(keyword);
-                let url = '/searchComments?keyword=' + keyword
-                if (request != null)
-                request.abort();
+                const el = document.querySelector('.comment');
+                console.log(el)
+                if (el === document.activeElement){
+                    let keyword = $('#commentInput').val();
+                    keyword = encodeURIComponent(keyword);
+                    let url = '/searchComments?keyword=' + keyword
+                    if (request != null)
+                    request.abort();
 
-                request = $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    building_id: "{{ building_id }}",
-                },
-                success: renderComments
-                });
+                    request = $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        building_id: "{{ building_id }}",
+                    },
+                    success: renderComments
+                    });
+                }
+                else{
+                    loadComments()
+                }
             }
 
             
